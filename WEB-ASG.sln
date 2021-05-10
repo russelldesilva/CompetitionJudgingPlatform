@@ -1,0 +1,17 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WEB-ASG", "WEB-ASG\WEB-ASG.csproj", "{729EF25A-0606-48B7-B18F-6DF68345CDEA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{729EF25A-0606-48B7-B18F-6DF68345CDEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{729EF25A-0606-48B7-B18F-6DF68345CDEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{729EF25A-0606-48B7-B18F-6DF68345CDEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{729EF25A-0606-48B7-B18F-6DF68345CDEA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
