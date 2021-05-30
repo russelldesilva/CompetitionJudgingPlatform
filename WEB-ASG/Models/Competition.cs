@@ -11,6 +11,7 @@ namespace WEB_ASG.Models
         public int CompetitionID { get; set; }
         public int AreaInterestID { get; set; }
         public List<Judge> JudgeList { get; set; }
+        public List<Competitor> CompetitorList { get; set; }
         [Required]
         [StringLength(255)]
         public string CompetitionName { get; set; }
@@ -27,6 +28,14 @@ namespace WEB_ASG.Models
         public void RemoveJudge(Judge j)
         {
             JudgeList.Remove(j);
+        }
+        public void AddCompetitor(Competitor c)
+        {
+            CompetitorList.Add(c);
+        }
+        public void RemoveCompetitor(Competitor c)
+        {
+            CompetitorList.Remove(c);
         }
     }
 }

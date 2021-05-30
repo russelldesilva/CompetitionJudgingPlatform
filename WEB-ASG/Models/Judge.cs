@@ -10,14 +10,17 @@ namespace WEB_ASG.Models
     public class Judge
     {
         public int JudgeID { get; set; }
+        [Required]
         [StringLength(50)]
         public string JudgeName{ get; set; }
         [StringLength(5)]
         public string Salutation { get; set; }
         public int AreaIntrestID { get; set; }
+        [Required]
         [RegularExpression("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$")]
         [StringLength(50)]
         public string EmailAddr { get; set; }
+        [Required]
         [DataType(DataType.Password)]
         [StringLength(255)]
         [DefaultValue("p@55Judge")]
