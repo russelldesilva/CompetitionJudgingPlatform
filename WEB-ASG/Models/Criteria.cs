@@ -17,6 +17,6 @@ namespace WEB_ASG.Models
         [Required]
         [Range(1, 100)]
         [DefaultValue(0)]
-        public int Weightage { get; set; };
+        public int Weightage { get; set; }
     }
 }
