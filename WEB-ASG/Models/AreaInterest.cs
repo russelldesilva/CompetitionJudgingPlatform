@@ -13,13 +13,5 @@ namespace WEB_ASG.Models
         [StringLength(50)]
         public string Name { get; set; }
         public List<Judge> JudgeList { get; set; }
-        public void AddJudge(Judge j)
-        {
-            JudgeList.Add(j);
-        }
-        public void RemoveJudge(Judge j)
-        {
-            JudgeList.Remove(j);
-        }
     }
 }

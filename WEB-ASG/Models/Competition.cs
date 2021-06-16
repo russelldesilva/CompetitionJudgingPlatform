@@ -21,21 +21,6 @@ namespace WEB_ASG.Models
         public DateTime EndDate { get; set; }
         [DataType(DataType.Date)]
         public DateTime ResultReleaseDate { get; set; }
-        public void AddJudge(Judge j)
-        {
-            JudgeList.Add(j);
-        }
-        public void RemoveJudge(Judge j)
-        {
-            JudgeList.Remove(j);
-        }
-        public void AddCompetitor(Competitor c)
-        {
-            CompetitorList.Add(c);
-        }
-        public void RemoveCompetitor(Competitor c)
-        {
-            CompetitorList.Remove(c);
-        }
+        public List<Comment> CommentList { get; set; }
     }
 }

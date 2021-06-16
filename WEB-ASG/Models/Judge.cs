@@ -25,6 +25,5 @@ namespace WEB_ASG.Models
         [StringLength(255)]
         [DefaultValue("p@55Judge")]
         public string Password { get; set; }
-        public int CompetitionID { get; set; }
     }
 }

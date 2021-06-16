@@ -9,7 +9,6 @@ namespace WEB_ASG.Models
     public class Competitor
     {
         public int CompetitorID { get; set; }
-        public int CompetitionID { get; set; }
         [Required]
         [StringLength(50)]
         public int CompetitorName { get; set; }
