@@ -1,7 +1,37 @@
-﻿@{
-    ViewData["Title"] = "Area of Interest - Coding";
-    Layout = "_AdminMenu";
-}
-<h1>@ViewData["Title"]</h1>
+﻿@model WEB_ASG.Models.AreaInterest;
 
-<p>AOI - Coding</p>
+@{
+    ViewData["Title"] = "ViewAreaInterest";
+    List<Judge> jList = Model.JudgeList;
+}
+
+<h1>Area of Interest Details</h1>
+
+<div>
+    <h4>@Html.DisplayFor(model => model.Name)</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col">
+            @Html.DisplayNameFor(model => model.AreaInterestID)
+        </dt>
+        <dd class="col">
+            @Html.DisplayTextFor(model => model.AreaInterestID)
+        </dd>
+    </dl>
+    @foreach (Judge j in jList)
+    {
+        <dl class="row">
+            <dt class="col">
+                <p>Judge Name</p>
+            </dt>
+            <dd class="col">
+                <p>@j.JudgeName</p>
+            </dd>
+        </dl>
+    }
+</div>
+<div>
+    @Html.ActionLink("Create Competition", "EditComp", new { /* id = Model.PrimaryKey */ })
+    @Html.ActionLink("Delete Area of Interest", "CreateAreaInterests", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>

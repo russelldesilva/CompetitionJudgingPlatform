@@ -1,7 +1,45 @@
-﻿@{
-    ViewData["Title"] = "Create/Edit Competition";
-    Layout = "_AdminMenu";
-}
-<h1>@ViewData["Title"]</h1>
+﻿@model WEB_ASG.Models.Competition
 
-<p>Create/Edit Competition</p>
+@{
+    ViewData["Title"] = "EditComp";
+}
+
+<h1>Edit Competiton</h1>
+
+<h4>Lion City University</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditComp">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CompetitionName" class="control-label"></label>
+                <input asp-for="CompetitionName" class="form-control" />
+                <span asp-validation-for="CompetitionName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartDate" class="control-label"></label>
+                <input asp-for="StartDate" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndDate" class="control-label"></label>
+                <input asp-for="EndDate" class="form-control" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ResultReleaseDate" class="control-label"></label>
+                <input asp-for="ResultReleaseDate" class="form-control" />
+                <span asp-validation-for="ResultReleaseDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to Admin Home</a>
+</div>
+

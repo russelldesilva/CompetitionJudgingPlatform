@@ -1,7 +1,30 @@
-﻿@{
-    ViewData["Title"] = "Create Area of Interest";
-    Layout = "_AdminMenu";
-}
-<h1>@ViewData["Title"]</h1>
+﻿@model WEB_ASG.Models.AreaInterest
 
-<p>Create new Area of Interest</p>
+@{
+    ViewData["Title"] = "CreateAreaInterest";
+}
+
+<h1>Create Area of Interest</h1>
+
+<h4>Lion City University</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateAreaInterest">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to Admin Home</a>
+</div>
+

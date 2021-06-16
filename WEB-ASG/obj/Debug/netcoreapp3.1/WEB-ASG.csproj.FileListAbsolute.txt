@@ -28,10 +28,7 @@ D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\ne
 D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\WEB-ASG.TagHelpers.output.cache
 D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\WEB-ASG.RazorCoreGenerate.cache
 D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Admin\AddJudge.cshtml.g.cs
-D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Admin\CreateAreaInterest.cshtml.g.cs
-D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Admin\EditComp.cshtml.g.cs
 D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Admin\Index.cshtml.g.cs
-D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Admin\ViewAreaInterest.cshtml.g.cs
 D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Home\AboutUs.cshtml.g.cs
 D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Home\ContactUs.cshtml.g.cs
 D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Home\Index.cshtml.g.cs
@@ -122,3 +119,6 @@ D:\WEB - Web Application Development\assignment\application\WEB-ASG\bin\Debug\ne
 D:\WEB - Web Application Development\assignment\application\WEB-ASG\bin\Debug\netcoreapp3.1\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
 D:\WEB - Web Application Development\assignment\application\WEB-ASG\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
 D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_AdminMenu.cshtml.g.cs
+D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Admin\CreateAreaInterest.cshtml.g.cs
+D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Admin\EditComp.cshtml.g.cs
+D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Admin\ViewAreaInterest.cshtml.g.cs

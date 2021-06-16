@@ -12,6 +12,7 @@ namespace WEB_ASG.Models
         public int JudgeID { get; set; }
         [Required]
         [StringLength(50)]
+        [Display(Name = "Judge Name")]
         public string JudgeName{ get; set; }
         [StringLength(5)]
         public string Salutation { get; set; }
