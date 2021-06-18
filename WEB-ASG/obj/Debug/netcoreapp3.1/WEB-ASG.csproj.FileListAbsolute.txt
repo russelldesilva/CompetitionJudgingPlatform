@@ -14,7 +14,6 @@ D:\WEB - Web Application Development\assignment\application\WEB-ASG\bin\Debug\ne
 D:\WEB - Web Application Development\assignment\application\WEB-ASG\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\sni.dll
 D:\WEB - Web Application Development\assignment\application\WEB-ASG\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
 D:\WEB - Web Application Development\assignment\application\WEB-ASG\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
-D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\WEB-ASG.csprojAssemblyReference.cache
 D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\WEB-ASG.AssemblyInfoInputs.cache
 D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\WEB-ASG.AssemblyInfo.cs
 D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\WEB-ASG.csproj.CoreCompileInputs.cache
@@ -122,3 +121,4 @@ D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\ne
 D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Admin\CreateAreaInterest.cshtml.g.cs
 D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Admin\EditComp.cshtml.g.cs
 D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Admin\ViewAreaInterest.cshtml.g.cs
+D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\WEB-ASG.csproj.AssemblyReference.cache

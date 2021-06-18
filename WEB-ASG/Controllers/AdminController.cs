@@ -26,6 +26,15 @@ namespace WEB_ASG.Controllers
             EmailAddr = "hfcaltarservers@gmail.com",
             Salutation = "Mrs"
         };
+        private Competition c = new Competition
+        {
+            AreaInterestID = 1,
+            CompetitionID = 1,
+            CompetitionName = "C# Challenge",
+            StartDate = new DateTime(2021, 06, 17, 14, 14, 0, 0),
+            EndDate = new DateTime(2021, 12, 31, 15, 0, 0, 0),
+            ResultReleaseDate = new DateTime(2022, 01, 01, 15, 0, 0, 0)
+        };
         public AdminController()
         {
             aoi.JudgeList.Add(j);
@@ -46,12 +55,12 @@ namespace WEB_ASG.Controllers
         [HttpPost]
         public ActionResult CreateAreaInterest(AreaInterest areaInterest)
         {
-            aoi = areaInterest;
-            return View(aoi);
+            return View(areaInterest);
         }
-        public IActionResult EditComp()
+        public IActionResult EditComp(Competition comp)
         {
-            return View();
+            comp = c;
+            return View(comp);
         }
         public IActionResult AddJudge()
         {
