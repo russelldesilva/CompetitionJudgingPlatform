@@ -43,5 +43,26 @@ namespace WEB_ASG.DAL
             conn.Close();
             return areaInterestList;
         }
+        public AreaInterest GetDetails(int areaInterestID)
+        {
+            AreaInterest areaInterest = new AreaInterest();
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = @"SELECT * FROM AreaInterest WHERE AreaInterestID = @selectedID";
+            cmd.Parameters.AddWithValue("@selectedID", areaInterestID);
+            conn.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    areaInterest.AreaInterestID = areaInterestID;
+                    areaInterest.Name = reader.GetString(1);
+                    areaInterest.CompetitonList = new List<Competition>();
+                }
+            }
+            reader.Close();
+            conn.Close();
+            return areaInterest;
+        }
     }
 }

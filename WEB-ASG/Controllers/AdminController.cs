@@ -4,66 +4,49 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WEB_ASG.Models;
+using WEB_ASG.DAL;
 
 namespace WEB_ASG.Controllers
 {
     public class AdminController : Controller
     {
-        private AreaInterest aoi = new AreaInterest { AreaInterestID = 1, Name = "Coding", JudgeList = new List<Judge>() };
-        private Judge j = new Judge
-        {
-            AreaIntrestID = 1,
-            JudgeID = 1,
-            JudgeName = "Ayken",
-            EmailAddr = "hfcaltarservers@gmail.com",
-            Salutation = "Mrs"
-        };
-        private Judge j2 = new Judge
-        {
-            AreaIntrestID = 1,
-            JudgeID = 2,
-            JudgeName = "Russell",
-            EmailAddr = "hfcaltarservers@gmail.com",
-            Salutation = "Mrs"
-        };
-        private Competition c = new Competition
-        {
-            AreaInterestID = 1,
-            CompetitionID = 1,
-            CompetitionName = "C# Challenge",
-            StartDate = new DateTime(2021, 06, 17, 14, 14, 0, 0),
-            EndDate = new DateTime(2021, 12, 31, 15, 0, 0, 0),
-            ResultReleaseDate = new DateTime(2022, 01, 01, 15, 0, 0, 0)
-        };
+        private AreaInterestDAL areaInterestContext = new AreaInterestDAL();
+        private CompetitionDAL competitionContext = new CompetitionDAL();
+        private JudgeDAL judgeContext = new JudgeDAL();
         public AdminController()
         {
-            aoi.JudgeList.Add(j);
-            aoi.JudgeList.Add(j2);
+
         }
-        public IActionResult Index()
+        public ActionResult Index()
         {
+            List<AreaInterest> areaInterests = areaInterestContext.GetAreaInterests();
+            ViewData["aoiList"] = areaInterests;
             return View();
         }
-        public IActionResult ViewAreaInterest()
+        public ActionResult ViewAreaInterest(int aoiID)
         {
+            AreaInterest aoi = areaInterestContext.GetDetails(aoiID);
+            competitionContext.GetCompetitions();
+            aoi.CompetitonList = competitionContext.GetDetails("AreaInterestID", aoiID);
             return View(aoi);
         }
         public IActionResult CreateAreaInterest()
         {
-            return View(aoi);
+            return View();
         }
         [HttpPost]
-        public ActionResult CreateAreaInterest(AreaInterest areaInterest)
+        public ActionResult CreateAreaInterest(AreaInterest aoi)
         {
-            return View(areaInterest);
+            return RedirectToAction("Index");
         }
-        public IActionResult EditComp(Competition comp)
+        public ActionResult EditComp()
         {
-            comp = c;
-            return View(comp);
+            List<AreaInterest> areaInterests = areaInterestContext.GetAreaInterests();
+            return View();
         }
-        public IActionResult AddJudge()
+        public ActionResult AddJudge()
         {
+            List<Judge> judges = judgeContext.GetJudges();
             return View();
         }
     }

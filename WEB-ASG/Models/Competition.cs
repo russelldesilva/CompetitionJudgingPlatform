@@ -6,6 +6,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WEB_ASG.Models
 {
+    public class AreaInterest
+    {
+        [Display(Name = "ID")]
+        public int AreaInterestID { get; set; }
+        [Required]
+        [StringLength(50)]
+        public string Name { get; set; }
+        public List<Competition> CompetitonList { get; set; }
+    }
     public class Competition
     {
         public int CompetitionID { get; set; }

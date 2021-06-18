@@ -2,48 +2,29 @@
     ViewData["Title"] = "Index";
     Layout = "_AdminMenu";
 }
+@model WEB_ASG.Models.AreaInterest
 <div class="row">
     <div class="col-6">
         <h1>Administrator Home</h1>
     </div>
     <div class="col-3">
-        <a class="alert-danger" asp-action="EditComp">Edit Competition</a>
+        <a class="btn btn-danger" asp-action="EditComp">Edit Competition</a>
     </div>
     <div class="col-3">
-        <a class="alert-danger" asp-action="CreateAreaInterest">Create Area of Interest</a>
+        <a class="btn btn-danger" asp-action="CreateAreaInterest">Create Area of Interest</a>
     </div>
 </div>
-<h2>Areas of Interest (AOI)</h2>
-<div class="row">
-    <div class="col text-center">
-        <p>Coding</p>
-    </div>
-    <div class="col text-center">
-        <p>Cooking</p>
-    </div>
-    <div class="col text-center">
-        <p>Photography</p>
-    </div>
-</div>
-<div class="row">
-    <div class="col text-center">
-        <p>Coding</p>
-    </div>
-    <div class="col text-center">
-        <p>Cooking</p>
-    </div>
-    <div class="col text-center">
-        <p>Photography</p>
-    </div>
-</div>
-<div class="row">
-    <div class="col text-center">
-        <p>Coding</p>
-    </div>
-    <div class="col text-center">
-        <p>Cooking</p>
-    </div>
-    <div class="col text-center">
-        <p>Photography</p>
-    </div>
+<h3 class="text-muted">Areas of Interest (AOI)</h3>
+<div class="row row-cols-3">
+    @foreach (var aoi in ViewData["aoiList"] as List<AreaInterest>)
+    {
+        <div class="col text-center">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">@aoi.Name</h5>
+                    <a class="btn btn-primary text-light" asp-action="ViewAreaInterest" asp-route-aoiID="@aoi.AreaInterestID">Details</a>
+                </div>
+            </div>
+        </div>
+    }
 </div>

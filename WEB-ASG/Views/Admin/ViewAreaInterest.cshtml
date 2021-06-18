@@ -1,14 +1,14 @@
-﻿@model WEB_ASG.Models.AreaInterest;
+﻿@model WEB_ASG.Models.AreaInterest
+@using System.Diagnostics;
 
 @{
     ViewData["Title"] = "ViewAreaInterest";
-    List<Judge> jList = Model.JudgeList;
 }
 
 <h1>Area of Interest Details</h1>
 
 <div>
-    <h4>@Html.DisplayFor(model => model.Name)</h4>
+    <h3 class="text-muted">@Html.DisplayFor(model => model.Name)</h3>
     <hr />
     <dl class="row">
         <dt class="col">
@@ -18,20 +18,32 @@
             @Html.DisplayTextFor(model => model.AreaInterestID)
         </dd>
     </dl>
-    @foreach (Judge j in jList)
-    {
-        <dl class="row">
+    <dl class="row">
+        <dt class="col">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col">
+            @Html.DisplayTextFor(model => model.Name)
+        </dd>
+    </dl>
+    <dl class="row comp">
+        @for (int i = 0; i < Model.CompetitonList.Count; i++)
+        {
             <dt class="col">
-                <p>Judge Name</p>
+                <label asp-for="CompetitonList[i].CompetitionID">
+                    @Model.CompetitonList[i].CompetitionID
+                </label>
             </dt>
             <dd class="col">
-                <p>@j.JudgeName</p>
+                <label asp-for="CompetitonList[i].CompetitionName">
+                    @Model.CompetitonList[i].CompetitionName
+                </label>
             </dd>
-        </dl>
-    }
+        }
+    </dl>
 </div>
 <div>
-    @Html.ActionLink("Create Competition", "EditComp", new { /* id = Model.PrimaryKey */ })
+    @Html.ActionLink("Create Competition", "EditComp", new { /* id = Model.PrimaryKey */ }) |
     @Html.ActionLink("Delete Area of Interest", "CreateAreaInterests", new { /* id = Model.PrimaryKey */ }) |
     <a asp-action="Index">Back to List</a>
 </div>
