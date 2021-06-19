@@ -37,6 +37,7 @@ namespace WEB_ASG.Controllers
         [HttpPost]
         public ActionResult CreateAreaInterest(AreaInterest aoi)
         {
+            aoi.AreaInterestID = areaInterestContext.Add(aoi);
             return RedirectToAction("Index");
         }
         public ActionResult EditComp()

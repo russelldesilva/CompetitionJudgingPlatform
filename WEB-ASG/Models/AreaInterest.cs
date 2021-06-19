@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WEB_ASG.Models
 {
-    /*public class AreaInterest
+    public class AreaInterest
     {
         [Display(Name = "ID")]
         public int AreaInterestID { get; set; }
@@ -14,5 +14,5 @@ namespace WEB_ASG.Models
         [StringLength(50)]
         public string Name { get; set; }
         public List<Competition> CompetitonList { get; set; }
-    }*/
+    }
 }
