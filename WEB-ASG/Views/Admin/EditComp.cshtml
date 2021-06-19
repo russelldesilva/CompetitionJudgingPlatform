@@ -13,6 +13,14 @@
         <form asp-action="EditComp">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
+                <label asp-for="CompetitionID" class="control-label"></label>
+                <input asp-for="CompetitionID" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="AreaInterestID" class="control-label"></label>
+                <input asp-for="AreaInterestID" class="form-control" readonly />
+            </div>
+            <div class="form-group">
                 <label asp-for="CompetitionName" class="control-label"></label>
                 <input asp-for="CompetitionName" class="form-control" />
                 <span asp-validation-for="CompetitionName" class="text-danger"></span>

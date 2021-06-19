@@ -39,7 +39,7 @@
                 </dt>
                 <dd class="col-9">
                     <label asp-for="CompetitonList[i].CompetitionName">
-                        @Model.CompetitonList[i].CompetitionName
+                        @Model.CompetitonList[i].CompetitionName | <a class="btn-link" asp-action="EditComp" asp-route-compID="@Model.CompetitonList[i].CompetitionID">Edit</a>
                     </label>
                 </dd>
             </dl>
@@ -51,7 +51,6 @@
     }
 </div>
 <div>
-    @Html.ActionLink("Create Competition", "EditComp", new { /* id = Model.PrimaryKey */ }) |
     @Html.ActionLink("Delete Area of Interest", "CreateAreaInterests", new { /* id = Model.PrimaryKey */ }) |
     <a asp-action="Index">Back to List</a>
 </div>

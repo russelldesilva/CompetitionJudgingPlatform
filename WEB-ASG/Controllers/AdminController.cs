@@ -40,10 +40,30 @@ namespace WEB_ASG.Controllers
             aoi.AreaInterestID = areaInterestContext.Add(aoi);
             return RedirectToAction("Index");
         }
-        public ActionResult EditComp()
+        public ActionResult EditComp(int compID = 0)
         {
-            List<AreaInterest> areaInterests = areaInterestContext.GetAreaInterests();
-            return View();
+            if (compID == 0)
+            {
+                return View();
+            }
+            else
+            {
+                Competition comp = competitionContext.GetDetails("CompetitionID", compID)[0];
+                return View(comp);
+            }
+        }
+        [HttpPost]
+        public ActionResult EditComp(Competition comp)
+        {
+            if (comp.CompetitionID == 0)
+            {
+                competitionContext.Add(comp);
+            }
+            else
+            {
+                competitionContext.Update(comp);
+            }
+            return RedirectToAction("Index");
         }
         public ActionResult AddJudge()
         {

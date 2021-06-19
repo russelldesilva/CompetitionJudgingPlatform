@@ -8,7 +8,7 @@ namespace WEB_ASG.Models
 {
     public class Competition
     {
-        public int CompetitionID { get; set; }
+        public int CompetitionID { get; set; } = 0;
         public int AreaInterestID { get; set; }
         public List<Judge> JudgeList { get; set; }
         public List<Competitor> CompetitorList { get; set; }
@@ -19,8 +19,6 @@ namespace WEB_ASG.Models
         [DataType(DataType.Date)]
         [Display(Name = "Start Date")]
         public DateTime StartDate { get; set; }
-        [DataType(DataType.Date)]
-        [Display(Name = "End Date")]
         public DateTime EndDate { get; set; }
         [DataType(DataType.Date)]
         [Display(Name = "Results Release Date")]
