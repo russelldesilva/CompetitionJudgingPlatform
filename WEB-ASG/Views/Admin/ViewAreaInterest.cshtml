@@ -5,42 +5,50 @@
     ViewData["Title"] = "ViewAreaInterest";
 }
 
-<h1>Area of Interest Details</h1>
+<h1>Area of Interest:</h1>
 
 <div>
     <h3 class="text-muted">@Html.DisplayFor(model => model.Name)</h3>
     <hr />
     <dl class="row">
-        <dt class="col">
+        <dt class="col-3">
             @Html.DisplayNameFor(model => model.AreaInterestID)
         </dt>
-        <dd class="col">
+        <dd class="col-9">
             @Html.DisplayTextFor(model => model.AreaInterestID)
         </dd>
     </dl>
     <dl class="row">
-        <dt class="col">
+        <dt class="col-3">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd class="col">
+        <dd class="col-9">
             @Html.DisplayTextFor(model => model.Name)
         </dd>
     </dl>
-    <dl class="row comp">
-        @for (int i = 0; i < Model.CompetitonList.Count; i++)
+    <h5 class="text-muted">Competitions:</h5>
+    @if (Model.CompetitonList.Count > 0)
+    {
+        for (int i = 0; i < Model.CompetitonList.Count; i++)
         {
-            <dt class="col">
-                <label asp-for="CompetitonList[i].CompetitionID">
-                    @Model.CompetitonList[i].CompetitionID
-                </label>
-            </dt>
-            <dd class="col">
-                <label asp-for="CompetitonList[i].CompetitionName">
-                    @Model.CompetitonList[i].CompetitionName
-                </label>
-            </dd>
+            <dl class="row">
+                <dt class="col-3">
+                    <label asp-for="CompetitonList[i].CompetitionID">
+                        @Model.CompetitonList[i].CompetitionID
+                    </label>
+                </dt>
+                <dd class="col-9">
+                    <label asp-for="CompetitonList[i].CompetitionName">
+                        @Model.CompetitonList[i].CompetitionName
+                    </label>
+                </dd>
+            </dl>
         }
-    </dl>
+    }
+    else
+    {
+        <p class="text-secondary">No competitions for this area of interest</p>
+    }
 </div>
 <div>
     @Html.ActionLink("Create Competition", "EditComp", new { /* id = Model.PrimaryKey */ }) |
