@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WEB_ASG.Models;
 using WEB_ASG.DAL;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WEB_ASG.Controllers
 {
@@ -42,6 +43,7 @@ namespace WEB_ASG.Controllers
         }
         public ActionResult EditComp(int compID = 0)
         {
+            ViewData["aoiList"] = areaInterestContext.GetAreaInterests();
             if (compID == 0)
             {
                 return View();

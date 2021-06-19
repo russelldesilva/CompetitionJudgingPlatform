@@ -80,11 +80,12 @@ namespace WEB_ASG.DAL
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
             //Specify an UPDATE SQL statement
-            cmd.CommandText = @"UPDATE Competition SET CompetitionName=@name,
+            cmd.CommandText = @"UPDATE Competition SET AreaInterestID = @areaID, CompetitionName=@name,
                                 StartDate=@startDate, EndDate = @endDate, ResultReleasedDate = @resultDate
                             WHERE CompetitionID = @compID";
             //Define the parameters used in SQL statement, value for each parameter
             //is retrieved from respective class's property.
+            cmd.Parameters.AddWithValue("@areaID", comp.AreaInterestID);
             cmd.Parameters.AddWithValue("@name", comp.CompetitionName);
             cmd.Parameters.AddWithValue("@startDate", comp.StartDate);
             cmd.Parameters.AddWithValue("@endDate", comp.EndDate);
