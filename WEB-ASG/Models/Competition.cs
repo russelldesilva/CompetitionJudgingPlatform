@@ -10,8 +10,8 @@ namespace WEB_ASG.Models
     {
         public int CompetitionID { get; set; } = 0;
         public int AreaInterestID { get; set; }
-        public List<Judge> JudgeList { get; set; }
         public List<Competitor> CompetitorList { get; set; }
+        public List<Judge> JudgeList { get; set; } = new List<Judge>();
         [Required]
         [StringLength(255)]
         [Display(Name = "Competition Name")]

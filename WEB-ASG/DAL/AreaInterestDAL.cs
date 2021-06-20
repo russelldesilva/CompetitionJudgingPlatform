@@ -57,7 +57,6 @@ namespace WEB_ASG.DAL
                 {
                     areaInterest.AreaInterestID = areaInterestID;
                     areaInterest.Name = reader.GetString(1);
-                    areaInterest.CompetitonList = new List<Competition>();
                 }
             }
             reader.Close();

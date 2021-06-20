@@ -26,7 +26,6 @@ D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\ne
 D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\WEB-ASG.TagHelpers.input.cache
 D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\WEB-ASG.TagHelpers.output.cache
 D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\WEB-ASG.RazorCoreGenerate.cache
-D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Admin\AddJudge.cshtml.g.cs
 D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Admin\Index.cshtml.g.cs
 D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Home\AboutUs.cshtml.g.cs
 D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Home\ContactUs.cshtml.g.cs
@@ -122,3 +121,4 @@ D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\ne
 D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Admin\EditComp.cshtml.g.cs
 D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Admin\ViewAreaInterest.cshtml.g.cs
 D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\WEB-ASG.csproj.AssemblyReference.cache
+D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Admin\AddJudge.cshtml.g.cs

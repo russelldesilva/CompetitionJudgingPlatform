@@ -67,10 +67,17 @@ namespace WEB_ASG.Controllers
             }
             return RedirectToAction("Index");
         }
-        public ActionResult AddJudge()
+        public ActionResult AddJudge(int compID)
         {
-            List<Judge> judges = judgeContext.GetJudges();
-            return View();
+            Competition comp = competitionContext.GetDetails("CompetitionID", compID)[0];
+            List<Judge> judgeList = judgeContext.GetJudges();
+            comp.JudgeList = judgeContext.GetCompetitionJudges(judgeList, compID);
+            return View(comp);
         }
+        /*[HttpPost]
+        public ActionResult AddJudge(Competition comp)
+        {
+            return View();
+        }*/
     }
 }

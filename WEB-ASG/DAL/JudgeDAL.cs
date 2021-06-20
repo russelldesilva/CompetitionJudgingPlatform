@@ -39,13 +39,52 @@ namespace WEB_ASG.DAL
                         Salutation = reader.GetString(2),
                         AreaIntrestID = reader.GetInt32(3),
                         EmailAddr = reader.GetString(4),
-                        Password = reader.GetString(5)
+                        Password = reader.GetString(5),
                     }
                 );
             }
             reader.Close();
             conn.Close();
             return judgeList;
+        }
+        public List<Judge> GetCompetitionJudges(List<Judge> judgeList, int compID)
+        {
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = @"SELECT * FROM CompetitionJudge WHERE CompetitionID = @compID ORDER BY CompetitionID";
+            cmd.Parameters.AddWithValue("@compID", compID);
+            conn.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                foreach (Judge j in judgeList)
+                {
+                    if  (j.JudgeID == reader.GetInt32(1))
+                    {
+                        j.Selected = true;
+                    }
+                }
+            }
+            return judgeList;
+        }
+        public int Update(Judge judge)
+        {
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify an UPDATE SQL statement
+            cmd.CommandText = @"UPDATE Judge SET CompetitionID = @compID, AreaInterestID = @areaID
+                            WHERE JudgeID = @judgeID";
+            //Define the parameters used in SQL statement, value for each parameter
+            //is retrieved from respective class's property.
+            cmd.Parameters.AddWithValue("@compID", judge.CompetitionID);
+            cmd.Parameters.AddWithValue("@areaID", judge.AreaIntrestID);
+            cmd.Parameters.AddWithValue("@judgeID", judge.JudgeID);
+            //Open a database connection
+            conn.Open();
+            //ExecuteNonQuery is used for UPDATE and DELETE
+            int count = cmd.ExecuteNonQuery();
+            //Close the database connection
+            conn.Close();
+            return count;
         }
     }
 }

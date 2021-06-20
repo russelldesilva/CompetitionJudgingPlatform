@@ -17,6 +17,7 @@ namespace WEB_ASG.Models
         [StringLength(5)]
         public string Salutation { get; set; }
         public int AreaIntrestID { get; set; }
+        public int CompetitionID { get; set; }
         [Required]
         [RegularExpression("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$")]
         [StringLength(50)]
@@ -26,5 +27,6 @@ namespace WEB_ASG.Models
         [StringLength(255)]
         [DefaultValue("p@55Judge")]
         public string Password { get; set; }
+        public bool Selected { get; set; } = false;
     }
 }
