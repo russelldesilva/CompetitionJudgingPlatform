@@ -16,8 +16,7 @@ namespace WEB_ASG.Models
         public string JudgeName{ get; set; }
         [StringLength(5)]
         public string Salutation { get; set; }
-        public int AreaIntrestID { get; set; }
-        public int CompetitionID { get; set; }
+        public int AreaInterestID { get; set; }
         [Required]
         [RegularExpression("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$")]
         [StringLength(50)]

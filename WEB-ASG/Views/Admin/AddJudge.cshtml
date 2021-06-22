@@ -6,7 +6,7 @@
 
 <h1>Select Judges for @Model.CompetitionName</h1>
 <p class="text-muted">Select a minimum of 2 judges</p>
-<form>
+<form asp-action="AddJudge">
     @for (int i = 0; i < Model.JudgeList.Count; i++)
     {
         <div class="row">
@@ -14,6 +14,9 @@
             <label asp-for="JudgeList[i].Selected" class="col-form-label">@Model.JudgeList[i].JudgeName</label>
         </div>
     }
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
 </form>
 <div>
     <a asp-action="Index">Back to Admin Home</a>

@@ -22,10 +22,11 @@ namespace WEB_ASG.DAL
             string strConn = Configuration.GetConnectionString("CJPConnectionString");
             conn = new SqlConnection(strConn);
         }
-        public List<Judge> GetJudges()
+        public List<Judge> GetJudges(int areaID)
         {
             SqlCommand cmd = conn.CreateCommand();
-            cmd.CommandText = @"SELECT * FROM Judge ORDER BY JudgeID";
+            cmd.CommandText = @"SELECT * FROM Judge WHERE AreaInterestID = @areaID ORDER BY JudgeID";
+            cmd.Parameters.AddWithValue("@areaID", areaID);
             conn.Open();
             SqlDataReader reader = cmd.ExecuteReader();
             List<Judge> judgeList = new List<Judge>();
@@ -37,7 +38,7 @@ namespace WEB_ASG.DAL
                         JudgeID = reader.GetInt32(0),
                         JudgeName = reader.GetString(1),
                         Salutation = reader.GetString(2),
-                        AreaIntrestID = reader.GetInt32(3),
+                        AreaInterestID = reader.GetInt32(3),
                         EmailAddr = reader.GetString(4),
                         Password = reader.GetString(5),
                     }
@@ -64,25 +65,30 @@ namespace WEB_ASG.DAL
                     }
                 }
             }
+            reader.Close();
+            conn.Close();
             return judgeList;
         }
-        public int Update(Judge judge)
+        public int InsertCompetitionJudge (int compID, int judgeID)
         {
-            //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
-            //Specify an UPDATE SQL statement
-            cmd.CommandText = @"UPDATE Judge SET CompetitionID = @compID, AreaInterestID = @areaID
-                            WHERE JudgeID = @judgeID";
-            //Define the parameters used in SQL statement, value for each parameter
-            //is retrieved from respective class's property.
-            cmd.Parameters.AddWithValue("@compID", judge.CompetitionID);
-            cmd.Parameters.AddWithValue("@areaID", judge.AreaIntrestID);
-            cmd.Parameters.AddWithValue("@judgeID", judge.JudgeID);
-            //Open a database connection
+            cmd.CommandText = @"INSERT INTO CompetitionJudge (CompetitionID, JudgeID)
+                                VALUES(@compID, @judgeID)";
+            cmd.Parameters.AddWithValue("@compID", compID);
+            cmd.Parameters.AddWithValue("@judgeID", judgeID);
             conn.Open();
-            //ExecuteNonQuery is used for UPDATE and DELETE
             int count = cmd.ExecuteNonQuery();
-            //Close the database connection
+            conn.Close();
+            return count;
+        }
+        public int RemoveCompetitionJudge (int compID, int judgeID)
+        {
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = @"DELETE FROM CompetitionJudge WHERE CompetitionID = @compID and JudgeID = @judgeID";
+            cmd.Parameters.AddWithValue("@compID", compID);
+            cmd.Parameters.AddWithValue("@judgeID", judgeID);
+            conn.Open();
+            int count = cmd.ExecuteNonQuery();
             conn.Close();
             return count;
         }
