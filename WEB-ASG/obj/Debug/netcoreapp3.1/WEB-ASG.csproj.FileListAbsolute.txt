@@ -122,3 +122,5 @@ D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\ne
 D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Admin\ViewAreaInterest.cshtml.g.cs
 D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\WEB-ASG.csproj.AssemblyReference.cache
 D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Admin\AddJudge.cshtml.g.cs
+D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Admin\DeleteAreaInterest.cshtml.g.cs
+D:\WEB - Web Application Development\assignment\application\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Admin\DeleteComp.cshtml.g.cs

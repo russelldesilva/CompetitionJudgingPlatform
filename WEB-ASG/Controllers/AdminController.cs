@@ -29,7 +29,6 @@ namespace WEB_ASG.Controllers
         public ActionResult ViewAreaInterest(int aoiID)
         {
             AreaInterest aoi = areaInterestContext.GetDetails(aoiID);
-            competitionContext.GetCompetitions();
             aoi.CompetitonList = competitionContext.GetDetails("AreaInterestID", aoiID);
             return View(aoi);
         }
@@ -84,27 +83,28 @@ namespace WEB_ASG.Controllers
             }
             return RedirectToAction("Index");
         }
-        /*public ActionResult AddJudge(int compID)
+        public ActionResult DeleteAreaInterest(int aoiID)
         {
-            List<Judge> judgeList = judgeContext.GetJudges(comp.AreaInterestID);
-            comp.JudgeList = judgeContext.GetCompetitionJudges(judgeList, compID);
+            AreaInterest aoi = areaInterestContext.GetDetails(aoiID);
+            aoi.CompetitonList = competitionContext.GetDetails("AreaInterestID", aoiID);
+            return View(aoi);
+        }
+        [HttpPost]
+        public ActionResult DeleteAreaInterest(AreaInterest aoi)
+        {
+            areaInterestContext.Delete(aoi.AreaInterestID);
+            return RedirectToAction("Index");
+        }
+        public ActionResult DeleteComp(int compID)
+        {
+            Competition comp = competitionContext.GetDetails("CompetitionID", compID)[0];
             return View(comp);
         }
         [HttpPost]
-        public ActionResult AddJudge(Competition comp)
+        public ActionResult DeleteComp(Competition comp)
         {
-            foreach (Judge j in comp.JudgeList)
-            {
-                if (j.Selected)
-                {
-                    judgeContext.UpdateCompetitionJudge(j.JudgeID, comp.CompetitionID);
-                }
-                else
-                {
-                    judgeContext.UpdateCompetitionJudge(j.JudgeID, 0);
-                }
-            }
+            competitionContext.Delete(comp.CompetitionID);
             return RedirectToAction("Index");
-        }*/
+        }
     }
 }
