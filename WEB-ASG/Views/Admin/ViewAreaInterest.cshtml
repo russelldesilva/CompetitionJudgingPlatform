@@ -39,7 +39,8 @@
                 </dt>
                 <dd class="col-9">
                     <label asp-for="CompetitonList[i].CompetitionName">
-                        @Model.CompetitonList[i].CompetitionName | <a class="btn-link" asp-action="EditComp" asp-route-compID="@Model.CompetitonList[i].CompetitionID">Edit</a>
+                        @Model.CompetitonList[i].CompetitionName | <a class="btn-link" asp-action="EditComp" asp-route-compID="@Model.CompetitonList[i].CompetitionID">Edit</a> |
+                        <a class="btn-link" asp-action="DeleteComp" asp-route-compID="@Model.CompetitonList[i].CompetitionID">Delete</a>
                     </label>
                 </dd>
             </dl>

@@ -125,5 +125,48 @@ namespace WEB_ASG.DAL
             //Return id when no error occurs.
             return comp.CompetitionID;
         }
+        public int Delete(int compID)
+        {
+            //Instantiate a SqlCommand object, supply it with a DELETE SQL statement
+            //to delete a staff record specified by a Staff ID
+            SqlCommand cmd = conn.CreateCommand();
+            SqlCommand cmd1 = conn.CreateCommand();
+            SqlCommand cmd2 = conn.CreateCommand();
+            SqlCommand cmd3 = conn.CreateCommand();
+            SqlCommand cmd4 = conn.CreateCommand();
+            SqlCommand cmd5 = conn.CreateCommand();
+            cmd.CommandText = @"DELETE FROM Competition
+                                WHERE CompetitionID = @compID";
+            cmd.Parameters.AddWithValue("@compID", compID);
+            cmd1.CommandText = @"DELETE FROM CompetitionJudge
+                                 WHERE CompetitionID = @compID";
+            cmd1.Parameters.AddWithValue("@compID", compID);
+            cmd2.CommandText = @"DELETE FROM CompetitionSubmission
+                                 WHERE CompetitionID = @compID";
+            cmd2.Parameters.AddWithValue("@compID", compID);
+            cmd3.CommandText = @"DELETE FROM Criteria
+                                 WHERE CompetitionID = @compID";
+            cmd3.Parameters.AddWithValue("@compID", compID);
+            cmd4.CommandText = @"DELETE FROM Comment
+                                 WHERE CompetitionID = @compID";
+            cmd4.Parameters.AddWithValue("@compID", compID);
+            cmd5.CommandText = @"DELETE FROM CompetitionScore
+                                 WHERE CompetitionID = @compID";
+            cmd5.Parameters.AddWithValue("@compID", compID);
+            //Open a database connection
+            conn.Open();
+            int rowAffected = 0;
+            //Execute the DELETE SQL to remove the staff record
+            rowAffected += cmd1.ExecuteNonQuery();
+            rowAffected += cmd2.ExecuteNonQuery();
+            rowAffected += cmd3.ExecuteNonQuery();
+            rowAffected += cmd4.ExecuteNonQuery();
+            rowAffected += cmd5.ExecuteNonQuery();
+            rowAffected += cmd.ExecuteNonQuery();
+            //Close database connection
+            conn.Close();
+            //Return number of row of staff record updated or deleted
+            return rowAffected;
+        }
     }
 }
