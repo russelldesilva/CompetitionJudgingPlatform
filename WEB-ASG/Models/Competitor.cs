@@ -11,7 +11,8 @@ namespace WEB_ASG.Models
         public int CompetitorID { get; set; }
         [Required]
         [StringLength(50)]
-        public int CompetitorName { get; set; }
+        public string CompetitorName { get; set; }
+        [Required]
         [StringLength(5)]
         public string Salutation { get; set; }
         [Required]

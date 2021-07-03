@@ -6484,19 +6484,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\russe\\.nuget\\packages\\": {}
+    "C:\\Users\\lolot\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\WEB - Web Application Development\\assignment\\application\\WEB-ASG\\WEB-ASG.csproj",
+      "projectUniqueName": "C:\\Users\\lolot\\Source\\Repos\\web2021apr_p04_t2\\WEB-ASG\\WEB-ASG.csproj",
       "projectName": "WEB-ASG",
-      "projectPath": "D:\\WEB - Web Application Development\\assignment\\application\\WEB-ASG\\WEB-ASG.csproj",
-      "packagesPath": "C:\\Users\\russe\\.nuget\\packages\\",
-      "outputPath": "D:\\WEB - Web Application Development\\assignment\\application\\WEB-ASG\\obj\\",
+      "projectPath": "C:\\Users\\lolot\\Source\\Repos\\web2021apr_p04_t2\\WEB-ASG\\WEB-ASG.csproj",
+      "packagesPath": "C:\\Users\\lolot\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\lolot\\Source\\Repos\\web2021apr_p04_t2\\WEB-ASG\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\russe\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\lolot\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
