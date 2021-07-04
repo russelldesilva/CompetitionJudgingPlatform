@@ -46,7 +46,6 @@ namespace WEB_ASG.DAL
                 {
                     CompetitorID = reader.GetInt32(0), //0: 1st column
                     CompetitorName = reader.GetString(1), //1: 2nd column
-                                                          //Get the first character of a string
                     Salutation = reader.GetString(2), //2: 3rd column
                     EmailAddr = reader.GetString(3), //3: 4th column
                     Password = reader.GetString(4), //4: 5th column
@@ -95,7 +94,7 @@ namespace WEB_ASG.DAL
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
             //Specify an INSERT SQL statement which will
-            //return the auto-generated CompetitorID after insertion
+            //return the auto-generated CompetitorID after insertion 
             cmd.CommandText = @"INSERT INTO Competitor (CompetitorName, Salutation, EmailAddr, Password)
                                 OUTPUT INSERTED.CompetitorID
                                 VALUES(@competitorName, @salutation, @emailAddr, @password)";
