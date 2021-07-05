@@ -382,3 +382,4 @@ C:\Users\SuperNova\Source\Repos\web2021apr_p04_t2\WEB-ASG\obj\Debug\netcoreapp3.
 C:\Users\SuperNova\Source\Repos\web2021apr_p04_t2\WEB-ASG\obj\Debug\netcoreapp3.1\WEB-ASG.genruntimeconfig.cache
 C:\Users\SuperNova\Source\Repos\web2021apr_p04_t2\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Judge\Index.cshtml.g.cs
 C:\Users\SuperNova\Source\Repos\web2021apr_p04_t2\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Judge\Create.cshtml.g.cs
+C:\Users\SuperNova\Source\Repos\web2021apr_p04_t2\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Judge\CreateCriteria.cshtml.g.cs

@@ -33,6 +33,10 @@ namespace WEB_ASG.Controllers
             ViewData["aoiList"] = GetAreaOfInterest();
             return View();
         }
+        public ActionResult CreateCriteria()
+        {
+            return View();
+        }
         private List<SelectListItem> GetAreaOfInterest()
         {
             List<AreaInterest> areaInterests = areaInterestContext.GetAreaInterests();
