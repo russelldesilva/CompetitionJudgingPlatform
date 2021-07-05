@@ -115,7 +115,7 @@ namespace WEB_ASG.DAL
             return competitor.CompetitorID;
         }
 
-        public Competitor GetDetails(int competitorId)
+        public Competitor GetDetails(int competitorID)
         {
             Competitor competitor = new Competitor();
             //Create a SqlCommand object from connection object
@@ -124,8 +124,8 @@ namespace WEB_ASG.DAL
             //retrieves all attributes of a competitor record.
             cmd.CommandText = @"SELECT * FROM Competitor WHERE CompetitorID = @selectedCompetitorID";
             //Define the parameter used in SQL statement, value for the
-            //parameter is retrieved from the method parameter “competitorId”.
-            cmd.Parameters.AddWithValue("@selectedCompetitorID", competitorId);
+            //parameter is retrieved from the method parameter “competitorID”.
+            cmd.Parameters.AddWithValue("@selectedCompetitorID", competitorID);
             //Open a database connection
             conn.Open();
             //Execute SELCT SQL through a DataReader
@@ -136,7 +136,7 @@ namespace WEB_ASG.DAL
                 while (reader.Read())
                 {
                     // Fill competitor object with values from the data reader
-                    competitor.CompetitorID = competitorId;
+                    competitor.CompetitorID = competitorID;
                     competitor.CompetitorName = !reader.IsDBNull(1) ? reader.GetString(1) : null;
                     // (char) 0 - ASCII Code 0 - null value
                     competitor.Salutation = !reader.IsDBNull(2) ?
