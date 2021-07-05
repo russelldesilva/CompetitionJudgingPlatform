@@ -1,0 +1,18 @@
+﻿@model IEnumerable<WEB_ASG.Models.Judge>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-6">
+        <h1>Judge Home</h1>
+    </div>
+    <div class="col-3">
+        <a class="btn btn-danger" asp-action="Create">Create Judge Profile</a>
+    </div>
+    <div class="col-3">
+        <a class="btn btn-danger" asp-action="CreateCriteria">Create Judging Criteria</a>
+    </div>
+</div>

@@ -48,6 +48,32 @@ namespace WEB_ASG.DAL
             conn.Close();
             return judgeList;
         }
+        public int Add(Judge judge)
+        {
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify an INSERT SQL statement which will
+            //return the auto-generated CompetitorID after insertion 
+            cmd.CommandText = @"INSERT INTO Judge (JudgeName, Salutation, AreaInterestID, EmailAddr, Password)
+                                OUTPUT INSERTED.JudgeID
+                                VALUES(@judgeName, @salutation, @areaInterestID, @emailAddr, @password)";
+            //Define the parameters used in SQL statement, value for each parameter
+            //is retrieved from respective class's property.
+            cmd.Parameters.AddWithValue("@judgeName", judge.JudgeName);
+            cmd.Parameters.AddWithValue("@salutation", judge.Salutation);
+            cmd.Parameters.AddWithValue("@areaInterestID", judge.AreaInterestID);
+            cmd.Parameters.AddWithValue("@emailAddr", judge.EmailAddr);
+            cmd.Parameters.AddWithValue("@password", judge.Password);
+            //A connection to database must be opened before any operations made.
+            conn.Open();
+            //ExecuteScalar is used to retrieve the auto-generated
+            //CompetitorID after executing the INSERT SQL statement
+            judge.JudgeID = (int)cmd.ExecuteScalar();
+            //A connection should be closed after operations.
+            conn.Close();
+            //Return id when no error occurs.
+            return judge.JudgeID;
+        }
         public List<Judge> GetCompetitionJudges(List<Judge> judgeList, int compID)
         {
             SqlCommand cmd = conn.CreateCommand();
