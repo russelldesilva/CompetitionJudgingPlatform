@@ -9,19 +9,13 @@ namespace WEB_ASG.Models
     public class Competitor
     {
         public int CompetitorID { get; set; }
-        [Required]
-        [StringLength(50)]
+        [Required, StringLength(5)]
         public string CompetitorName { get; set; }
-        [Required]
-        [StringLength(5)]
+        [Required, StringLength(5)]
         public string Salutation { get; set; }
-        [Required]
-        [RegularExpression("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$")]
-        [StringLength(50)]
+        [Required, EmailAddress, StringLength(50), ValidateEmailExists]
         public string EmailAddr { get; set; }
-        [Required]
-        [DataType(DataType.Password)]
-        [StringLength(255)]
+        [Required, StringLength(255), DataType(DataType.Password)]
         public string Password { get; set; }
     }
 }
