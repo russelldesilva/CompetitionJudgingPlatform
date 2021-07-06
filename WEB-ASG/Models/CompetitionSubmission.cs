@@ -13,15 +13,14 @@ namespace WEB_ASG.Models
         [Display(Name = "Competitor ID")]
         public int CompetitorID { get; set; }
         [Display(Name = "File name")]
-        //[ValidateFileFormat]
-        [StringLength(255, ErrorMessage = "File can only have a maximum of 255 characters!")]
-        public string? FileSubmitted { get; set; }
+        [StringLength(255, ErrorMessage = "File can only have a maximum of 255 characters!"), ValidateFileFormat]
+        public string FileSubmitted { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}")]
         public DateTime? DateTimeFileUpload { get; set; }
         [Display(Name = "Appeal")]
         [StringLength(255, ErrorMessage = "File can only have a maximum of 255 characters!")]
-        public string? Appeal { get; set; }
+        public string Appeal { get; set; }
         [Display(Name = "Vote Count")]
         public int VoteCount { get; set; }
         [Display(Name = "Ranking")]
