@@ -33,7 +33,7 @@ namespace WEB_ASG.Controllers
         // GET: CompetitorController/Details/5
         public ActionResult Details(int id)
         {
-            return null;
+            return View();
         }
 
         // GET: Competitor/Create
