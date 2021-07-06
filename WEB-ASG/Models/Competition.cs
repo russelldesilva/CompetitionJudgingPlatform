@@ -8,9 +8,12 @@ namespace WEB_ASG.Models
 {
     public class Competition
     {
+        [Display(Name = "Competition ID")]
         public int CompetitionID { get; set; } = 0;
         public int AreaInterestID { get; set; }
+        [Display(Name = "List of Competitors")]
         public List<Competitor> CompetitorList { get; set; }
+        [Display(Name = "List of Judges")]
         public List<Judge> JudgeList { get; set; } = new List<Judge>();
         [Required]
         [StringLength(255)]
