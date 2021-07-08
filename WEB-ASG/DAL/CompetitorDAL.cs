@@ -143,8 +143,8 @@ namespace WEB_ASG.DAL
                     reader.GetString(2) : null;
                     competitor.EmailAddr = !reader.IsDBNull(3) ?
                     reader.GetString(3) : null;
-                    competitor.Password = !reader.IsDBNull(5) ?
-                    reader.GetString(5) : null;
+                    competitor.Password = !reader.IsDBNull(4) ?
+                    reader.GetString(4) : null;
                 }
             }
             //Close data reader

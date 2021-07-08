@@ -6,11 +6,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using WEB_ASG.Models;
+using WEB_ASG.DAL;
 
 namespace WEB_ASG.Controllers
 {
     public class HomeController : Controller
     {
+        private CompetitionDAL competitionContext = new CompetitionDAL();
+        private CompetitorDAL competitorContext = new CompetitorDAL();
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
@@ -21,6 +24,28 @@ namespace WEB_ASG.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        public IActionResult Competition(int compID)
+        {
+            Competition comp = competitionContext.GetDetails("CompetitionID", compID)[0];
+            comp.CompetitorList = competitorContext.GetAllCompetitor();
+            return View(comp);           
+        }
+
+        public IActionResult ViewCompetition()
+        {
+            List<Competition> compList = competitionContext.GetCompetitions();
+            ViewData["compList"] = compList;
+
+            return View();
+        }
+
+        public IActionResult ViewTeams(int competitorID)
+        {
+            Competitor c = competitorContext.GetDetails(competitorID);
+
+            return View(c);
         }
 
         public IActionResult AboutUs()
