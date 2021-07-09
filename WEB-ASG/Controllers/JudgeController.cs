@@ -17,24 +17,52 @@ namespace WEB_ASG.Controllers
         // GET: JudgeController
         public ActionResult Index()
         {
+            // Stop accessing the action if not logged in
+            // or account not in the "Judge" role
+            if ((HttpContext.Session.GetString("Role") == null) ||
+            (HttpContext.Session.GetString("Role") != "Judge"))
+            {
+                return RedirectToAction("Login", "Home");
+            }
             return View();
         }
 
         // GET: JudgeController/Details/5
         public ActionResult Details(int id)
         {
+            // Stop accessing the action if not logged in
+            // or account not in the "Judge" role
+            if ((HttpContext.Session.GetString("Role") == null) ||
+            (HttpContext.Session.GetString("Role") != "Judge"))
+            {
+                return RedirectToAction("Login", "Home");
+            }
             return View();
         }
 
         // GET: JudgeController/Create
         public ActionResult Create()
         {
+            // Stop accessing the action if not logged in
+            // or account not in the "Judge" role
+            if ((HttpContext.Session.GetString("Role") == null) ||
+            (HttpContext.Session.GetString("Role") != "Judge"))
+            {
+                return RedirectToAction("Login", "Home");
+            }
             ViewData["SalutationList"] = GetSalutations();
             ViewData["aoiList"] = GetAreaOfInterest();
             return View();
         }
         public ActionResult CreateCriteria()
         {
+            // Stop accessing the action if not logged in
+            // or account not in the "Judge" role
+            if ((HttpContext.Session.GetString("Role") == null) ||
+            (HttpContext.Session.GetString("Role") != "Judge"))
+            {
+                return RedirectToAction("Login", "Home");
+            }
             return View();
         }
         private List<SelectListItem> GetAreaOfInterest()
@@ -108,6 +136,13 @@ namespace WEB_ASG.Controllers
         // GET: JudgeController/Edit/5
         public ActionResult Edit(int id)
         {
+            // Stop accessing the action if not logged in
+            // or account not in the "Judge" role
+            if ((HttpContext.Session.GetString("Role") == null) ||
+            (HttpContext.Session.GetString("Role") != "Judge"))
+            {
+                return RedirectToAction("Login", "Home");
+            }
             return View();
         }
 

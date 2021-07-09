@@ -20,19 +20,24 @@ namespace WEB_ASG.Controllers
         {
             // Stop accessing the action if not logged in
             // or account not in the "Competitor" role
-            //if ((HttpContext.Session.GetString("Role") == null) ||
-            //(HttpContext.Session.GetString("Role") != "Competitor"))
-            //{
-            //    return RedirectToAction("Index", "Home");
-            //}
-            //List<Competitor> competitorList = competitorContext.GetAllCompetitor();
-            //return View(competitorList);
+            if ((HttpContext.Session.GetString("Role") == null) ||
+            (HttpContext.Session.GetString("Role") != "Competitor"))
+            {
+                return RedirectToAction("Login", "Home");
+            }
             return View();
         }
 
         // GET: CompetitorController/Details/5
         public ActionResult Details(int id)
         {
+            // Stop accessing the action if not logged in
+            // or account not in the "Competitor" role
+            if ((HttpContext.Session.GetString("Role") == null) ||
+            (HttpContext.Session.GetString("Role") != "Competitor"))
+            {
+                return RedirectToAction("Login", "Home");
+            }
             return View();
         }
 
@@ -105,7 +110,7 @@ namespace WEB_ASG.Controllers
             if ((HttpContext.Session.GetString("Role") == null) ||
             (HttpContext.Session.GetString("Role") != "Competitor"))
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Login", "Home");
             }
             if (id == null)
             { //Query string parameter not provided
@@ -148,7 +153,7 @@ namespace WEB_ASG.Controllers
             if ((HttpContext.Session.GetString("Role") == null) ||
             (HttpContext.Session.GetString("Role") != "Competitor"))
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Login", "Home");
             }
             if (id == null)
             {

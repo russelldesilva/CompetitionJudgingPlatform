@@ -22,18 +22,39 @@ namespace WEB_ASG.Controllers
         }
         public ActionResult Index()
         {
+            // Stop accessing the action if not logged in
+            // or account not in the "Admin" role
+            if ((HttpContext.Session.GetString("Role") == null) ||
+            (HttpContext.Session.GetString("Role") != "Admin"))
+            {
+                return RedirectToAction("Login", "Home");
+            }
             List<AreaInterest> areaInterests = areaInterestContext.GetAreaInterests();
             ViewData["aoiList"] = areaInterests;
             return View();
         }
         public ActionResult ViewAreaInterest(int aoiID)
         {
+            // Stop accessing the action if not logged in
+            // or account not in the "Admin" role
+            if ((HttpContext.Session.GetString("Role") == null) ||
+            (HttpContext.Session.GetString("Role") != "Admin"))
+            {
+                return RedirectToAction("Login", "Home");
+            }
             AreaInterest aoi = areaInterestContext.GetDetails(aoiID);
             aoi.CompetitonList = competitionContext.GetDetails("AreaInterestID", aoiID);
             return View(aoi);
         }
         public IActionResult CreateAreaInterest()
         {
+            // Stop accessing the action if not logged in
+            // or account not in the "Admin" role
+            if ((HttpContext.Session.GetString("Role") == null) ||
+            (HttpContext.Session.GetString("Role") != "Admin"))
+            {
+                return RedirectToAction("Login", "Home");
+            }
             return View();
         }
         [HttpPost]
@@ -44,6 +65,13 @@ namespace WEB_ASG.Controllers
         }
         public ActionResult EditComp(int compID)
         {
+            // Stop accessing the action if not logged in
+            // or account not in the "Admin" role
+            if ((HttpContext.Session.GetString("Role") == null) ||
+            (HttpContext.Session.GetString("Role") != "Admin"))
+            {
+                return RedirectToAction("Login", "Home");
+            }
             Competition comp = new Competition();
             ViewData["aoiList"] = areaInterestContext.GetAreaInterests();
             if (compID != 0)
@@ -85,6 +113,13 @@ namespace WEB_ASG.Controllers
         }
         public ActionResult DeleteAreaInterest(int aoiID)
         {
+            // Stop accessing the action if not logged in
+            // or account not in the "Admin" role
+            if ((HttpContext.Session.GetString("Role") == null) ||
+            (HttpContext.Session.GetString("Role") != "Admin"))
+            {
+                return RedirectToAction("Login", "Home");
+            }
             AreaInterest aoi = areaInterestContext.GetDetails(aoiID);
             aoi.CompetitonList = competitionContext.GetDetails("AreaInterestID", aoiID);
             return View(aoi);
@@ -97,6 +132,13 @@ namespace WEB_ASG.Controllers
         }
         public ActionResult DeleteComp(int compID)
         {
+            // Stop accessing the action if not logged in
+            // or account not in the "Admin" role
+            if ((HttpContext.Session.GetString("Role") == null) ||
+            (HttpContext.Session.GetString("Role") != "Admin"))
+            {
+                return RedirectToAction("Login", "Home");
+            }
             Competition comp = competitionContext.GetDetails("CompetitionID", compID)[0];
             return View(comp);
         }
