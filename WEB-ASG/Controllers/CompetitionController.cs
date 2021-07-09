@@ -4,15 +4,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WEB_ASG.Models;
+using WEB_ASG.DAL;
 
 namespace WEB_ASG.Controllers
 {
     public class CompetitionController : Controller
     {
+        private CompetitionDAL competitionContext = new CompetitionDAL();
+
         // GET: CompetitionController
         public ActionResult Index()
         {
-            return View();
+            List<Competition> competitionList = competitionContext.GetAllCompetitions();
+            return View(competitionList);
         }
 
         // GET: CompetitionController/Details/5
