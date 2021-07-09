@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using WEB_ASG.Models;
 using WEB_ASG.DAL;
+using Microsoft.AspNetCore.Http;
 
 namespace WEB_ASG.Controllers
 {
@@ -24,6 +25,54 @@ namespace WEB_ASG.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult Login(LoginViewModel loginVM)
+        {
+            if (ModelState.IsValid)
+            {
+                //Check if user is admin
+                if (loginVM.Email == "admin1@lcu.edu.sg" && loginVM.Password == "p@55Admin")
+                {
+                    // Store user role “Admin” as a string in session with the key “Role”
+                    HttpContext.Session.SetString("Role", "Admin");
+                    return RedirectToAction("Index", "Admin");
+                }
+                //Check if user is judge
+                JudgeDAL judgeContext = new JudgeDAL();
+                List<Judge> judgeList = judgeContext.GetAllJudges();
+                foreach (Judge judge in judgeList)
+                {
+                    if (loginVM.Email == judge.EmailAddr && loginVM.Password == judge.Password)
+                    {
+                        // Store user role “Judge” as a string in session with the key “Role”
+                        HttpContext.Session.SetString("Role", "Judge");
+                        return RedirectToAction("Index", "Judge");
+                    }
+                }
+                //Check if user is competitor
+                CompetitorDAL competitorContext = new CompetitorDAL();
+                List<Competitor> competitorList = competitorContext.GetAllCompetitor();
+                foreach (Competitor competitor in competitorList)
+                {
+                    if (loginVM.Email == competitor.EmailAddr && loginVM.Password == competitor.Password)
+                    {
+                        // Store user role “Judge” as a string in session with the key “Role”
+                        HttpContext.Session.SetString("Role", "Competitor");
+                        return RedirectToAction("Index", "Competitor");
+                    }
+                }
+                //If user does not belong to any the above, return error message
+                TempData["Message"] = "Invalid Login Credentials!";
+                return View();
+            }
+            else
+            {
+                //Input validation fails, return to the Create view
+                //to display error message
+                return View(loginVM);
+            }
         }
 
         public IActionResult Competition(int compID)
