@@ -69,7 +69,7 @@ namespace WEB_ASG.Controllers
             }
             else
             {
-                //Input validation fails, return to the Create view
+                //Input validation fails, return to the Login view
                 //to display error message
                 return View(loginVM);
             }
