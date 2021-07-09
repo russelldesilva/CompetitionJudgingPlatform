@@ -60,6 +60,7 @@ namespace WEB_ASG.Controllers
                     {
                         // Store user role “Judge” as a string in session with the key “Role”
                         HttpContext.Session.SetString("Role", "Competitor");
+                        HttpContext.Session.SetInt32("ID", competitor.CompetitorID);
                         return RedirectToAction("Index", "Competitor");
                     }
                 }
@@ -84,7 +85,7 @@ namespace WEB_ASG.Controllers
 
         public IActionResult ViewCompetition()
         {
-            List<Competition> compList = competitionContext.GetCompetitions();
+            List<Competition> compList = competitionContext.GetAllCompetitions();
             ViewData["compList"] = compList;
 
             return View();

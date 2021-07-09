@@ -22,7 +22,7 @@ namespace WEB_ASG.DAL
             string strConn = Configuration.GetConnectionString("CJPConnectionString");
             conn = new SqlConnection(strConn);
         }
-        public List<Competition> GetCompetitions()
+        public List<Competition> GetAllCompetitions()
         {
             SqlCommand cmd = conn.CreateCommand();
             cmd.CommandText = @"SELECT * FROM Competition ORDER BY CompetitionID";
