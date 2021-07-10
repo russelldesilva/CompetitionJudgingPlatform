@@ -47,6 +47,32 @@ namespace WEB_ASG.DAL
             conn.Close();
             return competitionList;
         }
+        //Get a Competition using CompetitionID
+        public Competition GetCompetition(int competiionID)
+        {
+            Competition competition = new Competition();
+            SqlCommand cmd = conn.CreateCommand();
+            string commandText = string.Format(@"SELECT * FROM Competition WHERE CompetitionID = {0}", competiionID);
+            cmd.CommandText = commandText;
+            conn.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    competition.CompetitionID = reader.GetInt32(0);
+                    competition.AreaInterestID = reader.GetInt32(1);
+                    competition.CompetitionName = reader.GetString(2);
+                    competition.StartDate = reader.GetDateTime(3);
+                    competition.EndDate = reader.GetDateTime(4);
+                    competition.ResultReleaseDate = reader.GetDateTime(5);
+                }
+            }
+            reader.Close();
+            conn.Close();
+            return competition;
+        }
+        //Get a list of Competition based on attribute
         public List<Competition> GetDetails(string attribute, int attrID)
         {
             List<Competition> compList = new List<Competition>();
