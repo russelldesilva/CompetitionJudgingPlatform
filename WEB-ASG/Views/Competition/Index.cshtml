@@ -7,14 +7,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h4 class="PageTitle">View Books</h4>
+<h4 class="PageTitle">View Competitions</h4>
 @{
     bool isCompetitor = false;
-    int competitorID = default(int);
     if (Context.Session.GetString("Role") == "Competitor")
     {
         isCompetitor = true;
-        competitorID = Context.Session.GetInt32("ID") ?? default(int);
     }
 }
 @if (Model.ToList().Count > 0)
@@ -47,7 +45,7 @@
                         {
                             <td>
                                 <a asp-action="Create" asp-controller="CompetitionSubmission"
-                                   asp-route-id="@competitorID">Join now</a>
+                                   asp-route-id="@item.CompetitionID">Join now</a>
                             </td>
                         }
                     </tr>

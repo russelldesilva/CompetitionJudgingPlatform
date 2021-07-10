@@ -58,7 +58,7 @@ namespace WEB_ASG.Controllers
                 {
                     if (loginVM.Email == competitor.EmailAddr && loginVM.Password == competitor.Password)
                     {
-                        // Store user role “Judge” as a string in session with the key “Role”
+                        // Store user role “Competitor” as a string in session with the key “Role”
                         HttpContext.Session.SetString("Role", "Competitor");
                         HttpContext.Session.SetInt32("ID", competitor.CompetitorID);
                         return RedirectToAction("Index", "Competitor");

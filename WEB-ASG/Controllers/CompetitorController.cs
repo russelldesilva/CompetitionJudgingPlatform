@@ -83,7 +83,7 @@ namespace WEB_ASG.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Competitor competitor)
         {
-            //Get country list for drop-down list
+            //Get salutation list for drop-down list
             //in case of the need to return to Create.cshtml view
             ViewData["SalutationList"] = GetSalutations();
             if (ModelState.IsValid)
@@ -99,7 +99,6 @@ namespace WEB_ASG.Controllers
                 //to display error message
                 return View(competitor);
             }
-
         }
 
         // GET: CompetitorController/Edit/5
