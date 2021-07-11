@@ -15,8 +15,9 @@ namespace WEB_ASG.Models
         [StringLength(50)]
         public string CriteriaName { get; set; }
         [Required]
-        [Range(1, 100)]
+        [Range(1, 100, ErrorMessage = "The field {0} must be greater than 1 or lesser than 100.")]
         [DefaultValue(0)]
+        [ValidateWeightage]
         public int Weightage { get; set; }
     }
 }
