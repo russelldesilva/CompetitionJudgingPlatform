@@ -54,7 +54,20 @@ namespace WEB_ASG.Controllers
             ViewData["aoiList"] = GetAreaOfInterest();
             return View();
         }
+
         public ActionResult CreateCriteria()
+        {
+            // Stop accessing the action if not logged in
+            // or account not in the "Staff" role
+            if ((HttpContext.Session.GetString("Role") == null) ||
+            (HttpContext.Session.GetString("Role") != "Judge"))
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            return View();
+        }
+
+        public ActionResult ViewCriteria()
         {
             // Stop accessing the action if not logged in
             // or account not in the "Judge" role
@@ -63,7 +76,8 @@ namespace WEB_ASG.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
-            return View();
+            List<Criteria> criteriaList = judgeContext.GetAllCriteria();
+            return View(criteriaList);
         }
         private List<SelectListItem> GetAreaOfInterest()
         {
@@ -123,7 +137,7 @@ namespace WEB_ASG.Controllers
                 //Add competitor record to database
                 judge.JudgeID = judgeContext.Add(judge);
                 //Redirect user to Competitor/Index view
-                return RedirectToAction("Index");
+                return RedirectToAction("ViewCriteria");
             }
             else
             {
@@ -132,9 +146,27 @@ namespace WEB_ASG.Controllers
                 return View(judge);
             }
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateCriteria(Criteria criteria)
+        {
+            if (ModelState.IsValid)
+            {
+                //Add staff record to database
+                criteria.CriteriaID = judgeContext.AddCriteria(criteria);
+                //Redirect user to Staff/Index view
+                return RedirectToAction("ViewCriteria");
+            }
+            else
+            {
+                //Input validation fails, return to the Create view
+                //to display error message
+                return View(criteria);
+            }
+        }
 
         // GET: JudgeController/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int? id)
         {
             // Stop accessing the action if not logged in
             // or account not in the "Judge" role
@@ -143,43 +175,73 @@ namespace WEB_ASG.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
-            return View();
+            if (id == null)
+            { //Query string parameter not provided
+              //Return to listing page, not allowed to edit
+                return RedirectToAction("ViewCriteria");
+            }
+            Criteria criteria = judgeContext.GetDetails(id.Value);
+            if (criteria == null)
+            {
+                //Return to listing page, not allowed to edit
+                return RedirectToAction("ViewCriteria");
+            }
+            return View(criteria);
         }
 
         // POST: JudgeController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(Criteria criteria)
         {
-            try
+            //Get branch list for drop-down list
+            //in case of the need to return to Edit.cshtml view
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                //Update staff record to database
+                judgeContext.Update(criteria);
+                return RedirectToAction("ViewCriteria");
             }
-            catch
+            else
             {
-                return View();
+                //Input validation fails, return to the view
+                //to display error message
+                return View(criteria);
             }
         }
 
         // GET: JudgeController/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int? id)
         {
-            return View();
+            // Stop accessing the action if not logged in
+            // or account not in the "Judge" role
+            if ((HttpContext.Session.GetString("Role") == null) ||
+            (HttpContext.Session.GetString("Role") != "Judge"))
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            if (id == null)
+            { //Query string parameter not provided
+              //Return to listing page, not allowed to edit
+                return RedirectToAction("ViewCriteria");
+            }
+            Criteria criteria = judgeContext.GetDetails(id.Value);
+            if (criteria == null)
+            {
+                //Return to listing page, not allowed to edit
+                return RedirectToAction("ViewCriteria");
+            }
+            return View(criteria);
         }
 
         // POST: JudgeController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(Criteria criteria)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            // Delete the staff record from database
+            judgeContext.Delete(criteria.CriteriaID);
+            return RedirectToAction("ViewCriteria");
         }
     }
 }
