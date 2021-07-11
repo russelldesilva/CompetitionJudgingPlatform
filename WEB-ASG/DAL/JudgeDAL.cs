@@ -47,6 +47,30 @@ namespace WEB_ASG.DAL
             conn.Close();
             return judgeList;
         }
+        public List<Criteria> GetAllCriteria()
+        {
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = @"SELECT * FROM Criteria ORDER BY CriteriaID";
+            conn.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+            List<Criteria> criteriaList = new List<Criteria>();
+            while (reader.Read())
+            {
+                criteriaList.Add(
+                    new Criteria
+                    {
+                        CriteriaID = reader.GetInt32(0),
+                        CompetitionID = reader.GetInt32(1),
+                        CriteriaName = reader.GetString(2),
+                        Weightage = reader.GetInt32(3),
+                        
+                    }
+                );
+            }
+            reader.Close();
+            conn.Close();
+            return criteriaList;
+        }
         public List<Judge> GetJudges(int areaID)
         {
             SqlCommand cmd = conn.CreateCommand();
@@ -73,12 +97,117 @@ namespace WEB_ASG.DAL
             conn.Close();
             return judgeList;
         }
+        public bool IsEmailExist(string email, int JudgeID)
+        {
+            bool emailFound = false;
+            //Create a SqlCommand object and specify the SQL statement
+            //to get a staff record with the email address to be validated
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = @"SELECT JudgeID FROM Judge
+ WHERE EmailAddr=@selectedEmail";
+            cmd.Parameters.AddWithValue("@selectedEmail", email);
+            //Open a database connection and execute the SQL statement
+            conn.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            { //Records found
+                while (reader.Read())
+                {
+                    if (reader.GetInt32(0) != JudgeID)
+                        //The email address is used by another staff
+                        emailFound = true;
+                }
+            }
+            else
+            { //No record
+                emailFound = false; // The email address given does not exist
+            }
+            reader.Close();
+            conn.Close();
+
+            return emailFound;
+        }
+
+        public int EditWeightage(int competitionID, int criteriaID)
+        {
+            int Weightage = 0;
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = @"SELECT Weightage FROM Criteria
+ WHERE CompetitionID=@selectedCompetition and CriteriaID = @selectedCriteriaID";
+            cmd.Parameters.AddWithValue("@selectedCompetition", competitionID);
+            cmd.Parameters.AddWithValue("@selectedCriteriaID", criteriaID);
+            conn.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            { //Records found
+                while (reader.Read())
+                {
+                    Weightage = reader.GetInt32(0);
+
+                }
+
+            }
+            reader.Close();
+            conn.Close();
+            return Weightage;
+        }
+        public bool IsWeightageRight(int competitionID, int weightage, int criteriaID)
+        {
+            bool weightageWrong = false;
+            int count = 0;
+            int Weightage = 0;
+            //Create a SqlCommand object and specify the SQL statement
+            //to get a staff record with the email address to be validated
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = @"SELECT Weightage FROM Criteria
+ WHERE CompetitionID=@selectedCompetition";
+            cmd.Parameters.AddWithValue("@selectedCompetition", competitionID);
+            //Open a database connection and execute the SQL statement
+            Weightage = EditWeightage(competitionID, criteriaID);
+            conn.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            { //Records found
+                while (reader.Read())
+                {
+                    count = count + reader.GetInt32(0);
+
+                }
+                
+            }
+            
+            if (count - Weightage + weightage > 100)
+            {
+                weightageWrong = true;
+            }
+            else if (count - Weightage + weightage == 100)
+            {
+                weightageWrong = false;
+            }
+            else if (count - Weightage + weightage < 100)
+            {
+                weightageWrong = false;
+            }
+            else if (count + weightage > 100)
+            { 
+                weightageWrong = true; 
+            }                
+            else
+            { 
+                weightageWrong = false; 
+            }
+            reader.Close();
+            conn.Close();
+
+            return weightageWrong;
+        }
+
         public int Add(Judge judge)
         {
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
             //Specify an INSERT SQL statement which will
-            //return the auto-generated CompetitorID after insertion 
+            //return the auto-generated JudgeID after insertion 
             cmd.CommandText = @"INSERT INTO Judge (JudgeName, Salutation, AreaInterestID, EmailAddr, Password)
                                 OUTPUT INSERTED.JudgeID
                                 VALUES(@judgeName, @salutation, @areaInterestID, @emailAddr, @password)";
@@ -92,12 +221,107 @@ namespace WEB_ASG.DAL
             //A connection to database must be opened before any operations made.
             conn.Open();
             //ExecuteScalar is used to retrieve the auto-generated
-            //CompetitorID after executing the INSERT SQL statement
+            //JudgeID after executing the INSERT SQL statement
             judge.JudgeID = (int)cmd.ExecuteScalar();
             //A connection should be closed after operations.
             conn.Close();
             //Return id when no error occurs.
             return judge.JudgeID;
+        }
+        public int Update(Criteria criteria)
+        {
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify an UPDATE SQL statement
+            cmd.CommandText = @"UPDATE Criteria SET CriteriaName=@criteriaName,
+                                Weightage = @weightage WHERE CriteriaID = @selectedCriteriaID";
+            //Define the parameters used in SQL statement, value for each parameter
+            //is retrieved from respective class's property.
+            cmd.Parameters.AddWithValue("@criteriaName",criteria.CriteriaName);
+            cmd.Parameters.AddWithValue("@weightage", criteria.Weightage);
+            cmd.Parameters.AddWithValue("@selectedCriteriaID", criteria.CriteriaID);
+            //Open a database connection
+            conn.Open();
+            //ExecuteNonQuery is used for UPDATE and DELETE
+            int count = cmd.ExecuteNonQuery();
+            //Close the database connection
+            conn.Close();
+            return count;
+        }
+        public int Delete(int criteriaID)
+        {
+            //Instantiate a SqlCommand object, supply it with a DELETE SQL statement
+            //to delete a staff record specified by a Staff ID
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = @"DELETE FROM Criteria
+ WHERE CriteriaID = @selectCriteriaID";
+            cmd.Parameters.AddWithValue("@selectCriteriaID", criteriaID);
+            //Open a database connection
+            conn.Open();
+            int rowAffected = 0;
+            //Execute the DELETE SQL to remove the staff record
+            rowAffected += cmd.ExecuteNonQuery();
+            //Close database connection
+            conn.Close();//Return number of row of staff record updated or deleted
+            return rowAffected;
+        }
+        public Criteria GetDetails(int criteriaID)
+        {
+            Criteria criteria = new Criteria();
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify the SELECT SQL statement that
+            //retrieves all attributes of a criteria record.
+            cmd.CommandText = @"SELECT * FROM Criteria WHERE CriteriaID = @selectedCriteriaID";
+            //Define the parameter used in SQL statement, value for the
+            //parameter is retrieved from the method parameter “criteriaID”.
+            cmd.Parameters.AddWithValue("@selectedCriteriaID", criteriaID);
+            //Open a database connection
+            conn.Open();
+            //Execute SELCT SQL through a DataReader
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                //Read the record from database
+                while (reader.Read())
+                {
+                    // Fill competitor object with values from the data reader
+                    criteria.CriteriaID = criteriaID;
+                    criteria.CompetitionID = reader.GetInt32(1);
+                    criteria.CriteriaName = !reader.IsDBNull(2) ?
+                    reader.GetString(2) : null;
+                    criteria.Weightage = reader.GetInt32(3);
+                }
+            }
+            //Close data reader
+            reader.Close();
+            //Close database connection
+            conn.Close();
+            return criteria;
+        }
+
+        public int AddCriteria(Criteria criteria)
+        { //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify an INSERT SQL statement which will
+            //return the auto-generated CriteriaID after insertion
+            cmd.CommandText = @"INSERT INTO Criteria (CompetitionID, CriteriaName, Weightage)
+                                OUTPUT INSERTED.CriteriaID
+                                VALUES(@competitionID, @criteriaName, @weightage)";
+            //Define the parameters used in SQL statement, value for each parameter
+            //is retrieved from respective class's property.
+            cmd.Parameters.AddWithValue("@competitionID", criteria.CompetitionID);
+            cmd.Parameters.AddWithValue("@criteriaName", criteria.CriteriaName);
+            cmd.Parameters.AddWithValue("@weightage", criteria.Weightage);
+            //A connection to database must be opened before any operations made.
+            conn.Open();
+            //ExecuteScalar is used to retrieve the auto-generated
+            //CriteriaID after executing the INSERT SQL statement
+            criteria.CriteriaID = (int)cmd.ExecuteScalar();
+            //A connection should be closed after operations.
+            conn.Close();
+            //Return id when no error occurs.
+            return criteria.CriteriaID;
         }
         public List<Judge> GetCompetitionJudges(List<Judge> judgeList, int compID)
         {
