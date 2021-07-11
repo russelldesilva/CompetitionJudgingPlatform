@@ -1,0 +1,40 @@
+﻿@model IEnumerable<WEB_ASG.Models.Criteria>
+@if (Model.ToList().Count > 0)
+{
+    <div class="table-responsive">
+        <table id="viewStaff" class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>CriteriaID</th>
+                    <th>CompetitionID</th>
+                    <th>CriteriaName</th>
+                    <th>Weightage</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.CriteriaID.ToString()</td>
+                        <td>@item.CompetitionID.ToString()</td>
+                        <td>
+                            @item.CriteriaName 
+                        </td>
+                        <td>@item.Weightage.ToString()</td>
+                        <td>
+                            <a asp-action="Edit" asp-controller="Judge"
+                               asp-route-id="@item.CriteriaID">Edit</a> |
+                            <a asp-action="Delete" asp-controller="Judge"
+                               asp-route-id="@item.CriteriaID">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <span style="color:red">No record found!</span>
+}
