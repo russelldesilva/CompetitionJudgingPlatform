@@ -1,0 +1,12 @@
+﻿@model IEnumerable<WEB_ASG.Models.Criteria>
+
+@{
+    ViewData["Title"] = "ViewCriteria";
+}
+
+<h4 class="PageTitle">View Criteria</h4>
+<p><a asp-action="CreateCriteria">Create New Criteria</a></p>
+<!-- Add a partial view to display a list of staff records
+ in a tabular format. -->
+<partial name="~/Views/Judge/ShowCriteria.cshtml" model="@Model" />
+
