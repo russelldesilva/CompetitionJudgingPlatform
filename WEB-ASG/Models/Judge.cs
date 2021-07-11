@@ -20,6 +20,7 @@ namespace WEB_ASG.Models
         [Required]
         [RegularExpression("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$")]
         [StringLength(50)]
+        [ValidateEmailExistsJudge]
         public string EmailAddr { get; set; }
         [Required]
         [DataType(DataType.Password)]
