@@ -72,17 +72,13 @@ namespace WEB_ASG.DAL
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
             //Specify an INSERT SQL statement
-            cmd.CommandText = @"INSERT INTO CompetitionSubmission (CompetitionID, CompetitorID, FileSubmitted, DateTimeFileUpload, Appeal, VoteCount, Ranking)
-                            VALUES(@competitionID, @competitorID, @fileSubmitted, @dateTimeFileUpload, @appeal, @voteCount, @ranking)";
+            cmd.CommandText = @"INSERT INTO CompetitionSubmission (CompetitionID, CompetitorID, VoteCount)
+                            VALUES(@competitionID, @competitorID, @voteCount)";
             //Define the parameters used in SQL statement, value for each parameter
             //is retrieved from respective class's property.
             cmd.Parameters.AddWithValue("@competitionID", competitionSubmissions.CompetitionID);
             cmd.Parameters.AddWithValue("@competitorID", competitionSubmissions.CompetitorID);
-            cmd.Parameters.AddWithValue("@fileSubmitted", competitionSubmissions.FileSubmitted);
-            cmd.Parameters.AddWithValue("@dateTimeFileUpload", competitionSubmissions.DateTimeFileUpload);
-            cmd.Parameters.AddWithValue("@appeal", competitionSubmissions.Appeal);
             cmd.Parameters.AddWithValue("@voteCount", competitionSubmissions.VoteCount);
-            cmd.Parameters.AddWithValue("@ranking", competitionSubmissions.Ranking);
             //A connection to database must be opened before any operations made.
             conn.Open();
             cmd.ExecuteScalar();

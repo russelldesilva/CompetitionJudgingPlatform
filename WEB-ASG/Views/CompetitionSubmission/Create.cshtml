@@ -12,6 +12,7 @@
             <label asp-for="CompetitionID"
                    class="col-sm-3 col-form-label"></label>
             <div class="col-sm-9 form-control-plaintext">
+                <input asp-for="CompetitionID" type="hidden"/>
                 @Html.Display("CompetitionID")
             </div>
         </div>
@@ -19,6 +20,7 @@
             <label asp-for="CompetitionName"
                    class="col-sm-3 col-form-label"></label>
             <div class="col-sm-9 form-control-plaintext">
+                <input asp-for="CompetitionName" type="hidden" />
                 @Html.Display("CompetitionName")
             </div>
         </div>
@@ -26,6 +28,7 @@
             <label asp-for="CompetitorID"
                    class="col-sm-3 col-form-label"></label>
             <div class="col-sm-9 form-control-plaintext">
+                <input asp-for="CompetitorID" type="hidden" />
                 @Html.Display("CompetitorID")
             </div>
         </div>
@@ -33,7 +36,7 @@
             <label asp-for="fileToUpload"
                    class="col-sm-3 col-form-label"></label>
             <div class="col-sm-9">
-                <input asp-for="fileToUpload" accept="image/jpeg" />
+                <input name="fileToUpload" asp-for="fileToUpload" accept="image/jpeg" />
             </div>
         </div>
         <div class="form-group row">

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using WEB_ASG.Models;
 using WEB_ASG.DAL;
 using System.IO;
+using System.Diagnostics;
 
 namespace WEB_ASG.Controllers
 {
@@ -59,12 +60,12 @@ namespace WEB_ASG.Controllers
         // POST: CompetitionSubmissionController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(CompetitionSubmissionViewModel competitionSubmissionVM)
+        public ActionResult Create(CompetitionSubmissionViewModel competitionSubmissionVM)
         {
             if (ModelState.IsValid)
             {
                 //Set current DateTime as DateTimeFileUpload
-                //if(competitionSubmissionVM.fileToUpload != null)
+                //if (competitionSubmissionVM.fileToUpload != null)
                 //{
                 //    // Find the filename extension of the file to be uploaded.
                 //    competitionSubmissionVM.FileSubmitted = Path.GetFileName(competitionSubmissionVM.fileToUpload.FileName);
@@ -81,7 +82,8 @@ namespace WEB_ASG.Controllers
                 //    }
                 //}
                 //Add competitor record to database
-                //competitionSubmissionContext.Add(competitor);
+                CompetitionSubmission competitionSubmissions = MapToCompetitionSubmission(competitionSubmissionVM);
+                competitionSubmissionContext.Add(competitionSubmissions);
                 //Redirect user to Competitor/Index view
                 return RedirectToAction("Index","Competitor");
             }
@@ -91,6 +93,18 @@ namespace WEB_ASG.Controllers
                 //to display error message
                 return View(competitionSubmissionVM);
             }
+        }
+
+        public CompetitionSubmission MapToCompetitionSubmission(CompetitionSubmissionViewModel competitionSubmissionVM)
+        {
+            return new CompetitionSubmission
+            {
+                CompetitionID = competitionSubmissionVM.CompetitionID,
+                CompetitorID = competitionSubmissionVM.CompetitorID,
+                FileSubmitted = competitionSubmissionVM.FileSubmitted,
+                DateTimeFileUpload = DateTime.Now,
+                VoteCount = 0
+            };
         }
 
         // GET: CompetitionSubmissionController/Edit/5
