@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\SuperNova\\Source\\Repos\\web2021apr_p04_t2\\WEB-ASG\\WEB-ASG.csproj": {}
+    "C:\\Users\\SuperNova\\source\\repos\\web2021apr_p04_t2\\WEB-ASG\\WEB-ASG.csproj": {}
   },
   "projects": {
-    "C:\\Users\\SuperNova\\Source\\Repos\\web2021apr_p04_t2\\WEB-ASG\\WEB-ASG.csproj": {
+    "C:\\Users\\SuperNova\\source\\repos\\web2021apr_p04_t2\\WEB-ASG\\WEB-ASG.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\SuperNova\\Source\\Repos\\web2021apr_p04_t2\\WEB-ASG\\WEB-ASG.csproj",
+        "projectUniqueName": "C:\\Users\\SuperNova\\source\\repos\\web2021apr_p04_t2\\WEB-ASG\\WEB-ASG.csproj",
         "projectName": "WEB-ASG",
-        "projectPath": "C:\\Users\\SuperNova\\Source\\Repos\\web2021apr_p04_t2\\WEB-ASG\\WEB-ASG.csproj",
+        "projectPath": "C:\\Users\\SuperNova\\source\\repos\\web2021apr_p04_t2\\WEB-ASG\\WEB-ASG.csproj",
         "packagesPath": "C:\\Users\\SuperNova\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\SuperNova\\Source\\Repos\\web2021apr_p04_t2\\WEB-ASG\\obj\\",
+        "outputPath": "C:\\Users\\SuperNova\\source\\repos\\web2021apr_p04_t2\\WEB-ASG\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\SuperNova\\AppData\\Roaming\\NuGet\\NuGet.Config",

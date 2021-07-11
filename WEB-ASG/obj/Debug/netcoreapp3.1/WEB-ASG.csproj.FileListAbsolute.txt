@@ -383,3 +383,12 @@ C:\Users\SuperNova\Source\Repos\web2021apr_p04_t2\WEB-ASG\obj\Debug\netcoreapp3.
 C:\Users\SuperNova\Source\Repos\web2021apr_p04_t2\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Judge\Index.cshtml.g.cs
 C:\Users\SuperNova\Source\Repos\web2021apr_p04_t2\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Judge\Create.cshtml.g.cs
 C:\Users\SuperNova\Source\Repos\web2021apr_p04_t2\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Judge\CreateCriteria.cshtml.g.cs
+C:\Users\SuperNova\source\repos\web2021apr_p04_t2\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\CompetitionSubmission\Create.cshtml.g.cs
+C:\Users\SuperNova\source\repos\web2021apr_p04_t2\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Competition\Index.cshtml.g.cs
+C:\Users\SuperNova\source\repos\web2021apr_p04_t2\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Home\Competition.cshtml.g.cs
+C:\Users\SuperNova\source\repos\web2021apr_p04_t2\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Home\ViewCompetition.cshtml.g.cs
+C:\Users\SuperNova\source\repos\web2021apr_p04_t2\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Home\ViewTeams.cshtml.g.cs
+C:\Users\SuperNova\source\repos\web2021apr_p04_t2\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Judge\Delete.cshtml.g.cs
+C:\Users\SuperNova\source\repos\web2021apr_p04_t2\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Judge\Edit.cshtml.g.cs
+C:\Users\SuperNova\source\repos\web2021apr_p04_t2\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Judge\ShowCriteria.cshtml.g.cs
+C:\Users\SuperNova\source\repos\web2021apr_p04_t2\WEB-ASG\obj\Debug\netcoreapp3.1\Razor\Views\Judge\ViewCriteria.cshtml.g.cs

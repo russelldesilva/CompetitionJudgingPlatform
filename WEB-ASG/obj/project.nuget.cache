@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "1lwWsZmKkexd6RXd+U0g1EN9IXSPwfLlBwmExWs2cPi4P0iYrwWOvPpfCUTgp7joyVYNfAo14x5nmHispPfn0A==",
+  "dgSpecHash": "T8YX8lJtJOew5c2H72xfbfkuBeQKn0e5c4KL25q7sLkZRc/m4UNgKbRic7aly4HFcJD4B69M18XpnbfdRt55qA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\SuperNova\\Source\\Repos\\web2021apr_p04_t2\\WEB-ASG\\WEB-ASG.csproj",
+  "projectFilePath": "C:\\Users\\SuperNova\\source\\repos\\web2021apr_p04_t2\\WEB-ASG\\WEB-ASG.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\SuperNova\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\SuperNova\\.nuget\\packages\\microsoft.aspnetcore.razor\\2.2.0\\microsoft.aspnetcore.razor.2.2.0.nupkg.sha512",
