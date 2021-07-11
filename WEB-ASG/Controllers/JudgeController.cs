@@ -136,8 +136,8 @@ namespace WEB_ASG.Controllers
             {
                 //Add competitor record to database
                 judge.JudgeID = judgeContext.Add(judge);
-                //Redirect user to Competitor/Index view
-                return RedirectToAction("ViewCriteria");
+                //Redirect user to Judge/Index view
+                return RedirectToAction("Index");
             }
             else
             {
@@ -154,7 +154,7 @@ namespace WEB_ASG.Controllers
             {
                 //Add staff record to database
                 criteria.CriteriaID = judgeContext.AddCriteria(criteria);
-                //Redirect user to Staff/Index view
+                //Redirect user to Judge/ViewCriteria view
                 return RedirectToAction("ViewCriteria");
             }
             else
