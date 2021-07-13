@@ -95,6 +95,7 @@ namespace WEB_ASG.Controllers
         public ActionResult EditComp(Competition comp)
         {
             bool error = false;
+            int selected = 0;
             if (comp.StartDate.CompareTo(comp.EndDate) >= 0)
             {
                 ViewData["Message0"] = "End Date cannot be earlier or same as Start Date!";
@@ -108,6 +109,18 @@ namespace WEB_ASG.Controllers
             if (comp.EndDate.CompareTo(comp.ResultReleaseDate) >= 0)
             {
                 ViewData["Message1"] = "Result release date cannot be earlier or same as End Date!";
+                error = true;
+            }
+            foreach (Judge j in comp.JudgeList)
+            {
+                if (j.Selected)
+                {
+                    selected += 1;
+                }
+            }
+            if (selected < 2)
+            {
+                ViewData["Message2"] = "At least 2 judges per competition!";
                 error = true;
             }
             if (error)

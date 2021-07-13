@@ -31,12 +31,12 @@
             <div class="form-group">
                 <label asp-for="EndDate" class="control-label"></label>
                 <input asp-for="EndDate" class="form-control" />
-                <span asp-validation-for="EndDate" class="text-danger"></span>
+                <span asp-validation-for="EndDate" class="text-danger">@ViewData["Message0"]</span>
             </div>
             <div class="form-group">
                 <label asp-for="ResultReleaseDate" class="control-label"></label>
                 <input asp-for="ResultReleaseDate" class="form-control" />
-                <span asp-validation-for="ResultReleaseDate" class="text-danger"></span>
+                <span asp-validation-for="ResultReleaseDate" class="text-danger">@ViewData["Message1"]</span>
             </div>
         </div>
         <div class="col">
@@ -57,6 +57,7 @@
                         <input asp-for="JudgeList[i].EmailAddr" type="hidden" class="form-check-input" />
                         <input asp-for="JudgeList[i].Password" type="hidden" class="form-check-input" />
                     }
+                    <span class="text-danger">@ViewData["Message2"]</span>
                 </div>
             }
             <input type="submit" value="Save" class="btn btn-primary" />
