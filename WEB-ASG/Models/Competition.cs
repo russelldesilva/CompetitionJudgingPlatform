@@ -22,6 +22,8 @@ namespace WEB_ASG.Models
         [DataType(DataType.Date)]
         [Display(Name = "Start Date")]
         public DateTime StartDate { get; set; }
+        [DataType(DataType.Date)]
+        [Display(Name = "End Date")]
         public DateTime EndDate { get; set; }
         [DataType(DataType.Date)]
         [Display(Name = "Results Release Date")]
