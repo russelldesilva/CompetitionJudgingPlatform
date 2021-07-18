@@ -17,7 +17,7 @@ namespace WEB_ASG.Models
         public int CompetitorID { get; set; }
         [Display(Name = "Upload Work")]
         public IFormFile fileToUpload { get; set; }
-        [StringLength(255, ErrorMessage = "File can only have a maximum of 255 characters!"), ValidateFileFormat]
+        [StringLength(255, ErrorMessage = "File can only have a maximum of 255 characters!")]
         public string FileSubmitted { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}")]
