@@ -102,15 +102,17 @@ namespace WEB_ASG.DAL
             //Return id when no error occurs.
         }
 
-        public CompetitionSubmission GetDetails(int competitionID, int competitorID)
+        public CompetitionSubmissionViewModel GetDetails(int competitionID, int competitorID)
         {
-            CompetitionSubmission competitionSubmissions = new CompetitionSubmission();
+            CompetitionSubmissionViewModel competitionSubmissionVM = new CompetitionSubmissionViewModel();
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
             //Specify the SELECT SQL statement that
             //retrieves all attributes of a competition submission record.
-            cmd.CommandText = @"SELECT * FROM CompetitionSubmission 
-                                WHERE CompetitionID = @selectedCompetitionID AND CompetitorID = @selectedCompetitorID";
+            cmd.CommandText = @"SELECT Competition.CompetitionID, Competition.CompetitionName, CompetitorID, FileSubmitted, DateTimeFileUpload 
+                                FROM CompetitionSubmission 
+                                INNER JOIN Competition ON Competition.CompetitionID = CompetitionSubmission.CompetitionID
+                                WHERE Competition.CompetitionID = @selectedCompetitionID AND CompetitorID = @selectedCompetitorID";
             //Define the parameters used in SQL statement, value for the
             //parameter is retrieved from the method parameter “competitionID” and "competitorID".
             cmd.Parameters.AddWithValue("@selectedCompetitionID", competitionID);
@@ -125,20 +127,18 @@ namespace WEB_ASG.DAL
                 while (reader.Read())
                 {
                     // Fill competitionSubmissions object with values from the data reader
-                    competitionSubmissions.CompetitionID = competitionID;
-                    competitionSubmissions.CompetitorID = competitorID;
-                    competitionSubmissions.FileSubmitted = reader.GetString(2);
-                    competitionSubmissions.DateTimeFileUpload = reader.GetDateTime(3);
-                    competitionSubmissions.Appeal = reader.GetString(4);
-                    competitionSubmissions.VoteCount = reader.GetInt32(5);
-                    competitionSubmissions.Ranking = reader.GetInt32(6);
+                    competitionSubmissionVM.CompetitionID = competitionID;
+                    competitionSubmissionVM.CompetitionName = reader.GetString(1);
+                    competitionSubmissionVM.CompetitorID = competitorID;
+                    competitionSubmissionVM.FileSubmitted = !reader.IsDBNull(3) ? reader.GetString(3) : null;
+                    competitionSubmissionVM.DateTimeFileUpload = !reader.IsDBNull(4) ? reader.GetDateTime(4) : (DateTime?)null;
                 }
             }
             //Close data reader
             reader.Close();
             //Close database connection
             conn.Close();
-            return competitionSubmissions;
+            return competitionSubmissionVM;
         }
 
         // Return number of row updated
@@ -156,9 +156,24 @@ namespace WEB_ASG.DAL
             cmd.Parameters.AddWithValue("@competitorID", competitionSubmissions.CompetitorID);
             cmd.Parameters.AddWithValue("@fileSubmitted", competitionSubmissions.FileSubmitted);
             cmd.Parameters.AddWithValue("@dateTimeFileUpload", competitionSubmissions.DateTimeFileUpload);
-            cmd.Parameters.AddWithValue("@appeal", competitionSubmissions.Appeal);
+            if (string.IsNullOrEmpty(competitionSubmissions.Appeal))
+            {
+                cmd.Parameters.AddWithValue("@appeal", DBNull.Value);
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("@appeal", competitionSubmissions.Appeal);
+            }
             cmd.Parameters.AddWithValue("@voteCount", competitionSubmissions.VoteCount);
-            cmd.Parameters.AddWithValue("@ranking", competitionSubmissions.Ranking);
+
+            if (competitionSubmissions.Ranking == null)
+            {
+                cmd.Parameters.AddWithValue("@ranking", DBNull.Value);
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("@ranking", competitionSubmissions.Ranking);
+            }
             //Open a database connection
             conn.Open();
             //ExecuteNonQuery is used for UPDATE and DELETE
