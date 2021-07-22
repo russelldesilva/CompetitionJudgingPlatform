@@ -34,8 +34,9 @@ namespace WEB_ASG.DAL
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
             //Specify the SELECT SQL statement to get all competition submmissions of a competitor
-            cmd.CommandText = @"SELECT * FROM CompetitionSubmission ORDER BY CompetitorID 
-                                WHERE CompetitorID = @selectedCompetitorID";
+            cmd.CommandText = @"SELECT * FROM CompetitionSubmission 
+                                WHERE CompetitorID = @selectedCompetitorID  
+                                ORDER BY CompetitorID ";
             //Define the parameter used in SQL statement, value for the
             //parameter is retrieved from the method parameter “competitorID”.
             cmd.Parameters.AddWithValue("@selectedCompetitorID", competitorID);
@@ -45,21 +46,25 @@ namespace WEB_ASG.DAL
             SqlDataReader reader = cmd.ExecuteReader();
             //Read all records until the end, save data into a competitionSubmission list
             List<CompetitionSubmission> competitionSubmissionList = new List<CompetitionSubmission>();
-            while (reader.Read())
+            if (reader.HasRows)
             {
-                competitionSubmissionList.Add(
-                new CompetitionSubmission
+                while (reader.Read())
                 {
-                    CompetitionID = reader.GetInt32(0), //0: 1st column
-                    CompetitorID = reader.GetInt32(1), //1: 2nd column
-                    FileSubmitted = reader.GetString(2), //2: 3rd column
-                    DateTimeFileUpload = reader.GetDateTime(3), //3: 4th column
-                    Appeal = reader.GetString(4), //4: 5th column
-                    VoteCount = reader.GetInt32(5), //5: 6th column
-                    Ranking = reader.GetInt32(6), //6: 7th column
+                    competitionSubmissionList.Add(
+                    new CompetitionSubmission
+                    {
+                        CompetitionID = reader.GetInt32(0), //0: 1st column
+                        CompetitorID = reader.GetInt32(1), //1: 2nd column
+                        FileSubmitted = !reader.IsDBNull(2) ? reader.GetString(2) : null, //2: 3rd column
+                        DateTimeFileUpload = !reader.IsDBNull(3) ? reader.GetDateTime(3) : (DateTime?)null, //3: 4th column
+                        Appeal = !reader.IsDBNull(4) ? reader.GetString(4) : null, //4: 5th column
+                        VoteCount = reader.GetInt32(5), //5: 6th column
+                        Ranking = !reader.IsDBNull(6) ? reader.GetInt32(6) : (int?)null, //6: 7th column
+                    }
+                    ); ;
                 }
-                );
             }
+            
             //Close DataReader
             reader.Close();
             //Close the database connection
@@ -72,13 +77,23 @@ namespace WEB_ASG.DAL
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
             //Specify an INSERT SQL statement
-            cmd.CommandText = @"INSERT INTO CompetitionSubmission (CompetitionID, CompetitorID, VoteCount)
-                            VALUES(@competitionID, @competitorID, @voteCount)";
+            cmd.CommandText = @"INSERT INTO CompetitionSubmission (CompetitionID, CompetitorID, FileSubmitted, DateTimeFileUpload, VoteCount)
+                            VALUES(@competitionID, @competitorID, @fileSubmitted, @dateTimeFileUpload, @voteCount)";
             //Define the parameters used in SQL statement, value for each parameter
             //is retrieved from respective class's property.
             cmd.Parameters.AddWithValue("@competitionID", competitionSubmissions.CompetitionID);
             cmd.Parameters.AddWithValue("@competitorID", competitionSubmissions.CompetitorID);
             cmd.Parameters.AddWithValue("@voteCount", competitionSubmissions.VoteCount);
+            if(string.IsNullOrEmpty(competitionSubmissions.FileSubmitted))
+            {
+                cmd.Parameters.AddWithValue("@fileSubmitted", DBNull.Value);
+                cmd.Parameters.AddWithValue("@dateTimeFileUpload", DBNull.Value);
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("@fileSubmitted", competitionSubmissions.FileSubmitted);
+                cmd.Parameters.AddWithValue("@dateTimeFileUpload", competitionSubmissions.DateTimeFileUpload);
+            }
             //A connection to database must be opened before any operations made.
             conn.Open();
             cmd.ExecuteScalar();

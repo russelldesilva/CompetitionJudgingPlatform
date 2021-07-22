@@ -14,10 +14,32 @@ namespace WEB_ASG.Controllers
         private CompetitionDAL competitionContext = new CompetitionDAL();
 
         // GET: CompetitionController
-        public ActionResult Index()
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public ActionResult Index(int? compId1, int? compId2)
         {
-            List<Competition> competitionList = competitionContext.GetAllCompetitions();
-            return View(competitionList);
+            CompetitionViewModel competitionVM = new CompetitionViewModel();
+            competitionVM.competitionList = competitionContext.GetAllCompetitions();
+            // Check if CompID (id) presents in the query string
+            if (compId1 != null)
+            {
+                ViewData["selectedCompID1"] = compId1.Value;
+                ViewData["selectedCompID2"] = "";
+                // Get list of Judges for the Competition
+                competitionVM.judgeVMList = competitionContext.GetCompetitionJudge(compId1.Value);
+            }
+            else if(compId2 != null)
+            {
+                ViewData["selectedCompID1"] = "";
+                ViewData["selectedCompID2"] = compId2.Value;
+                // Get list of Criterias for the Competition
+                competitionVM.criteriaList = competitionContext.GetCompetitionCriteria(compId2.Value);
+            }
+            else
+            {
+                ViewData["selectedCompID1"] = "";
+                ViewData["selectedCompID2"] = "";
+            }
+            return View(competitionVM);
         }
 
         // GET: CompetitionController/Details/5

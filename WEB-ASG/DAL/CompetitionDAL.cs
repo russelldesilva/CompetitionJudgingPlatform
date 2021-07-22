@@ -22,20 +22,23 @@ namespace WEB_ASG.DAL
             string strConn = Configuration.GetConnectionString("CJPConnectionString");
             conn = new SqlConnection(strConn);
         }
-        public List<Competition> GetAllCompetitions()
+        //Get all Competition, but AreaOfInterestID is changed to Area of Interest Name
+        public List<CompetitionDetailsViewModel> GetAllCompetitions()
         {
             SqlCommand cmd = conn.CreateCommand();
-            cmd.CommandText = @"SELECT * FROM Competition ORDER BY CompetitionID";
+            cmd.CommandText = @"SELECT CompetitionID, AreaInterest.Name, CompetitionName, StartDate, EndDate, ResultReleasedDate 
+                                FROM Competition 
+                                INNER JOIN AreaInterest ON Competition.AreaInterestID = AreaInterest.AreaInterestID";
             conn.Open();
             SqlDataReader reader = cmd.ExecuteReader();
-            List<Competition> competitionList = new List<Competition>();
+            List<CompetitionDetailsViewModel> competitionList = new List<CompetitionDetailsViewModel>();
             while (reader.Read())
             {
                 competitionList.Add(
-                    new Competition
+                    new CompetitionDetailsViewModel
                     {
                         CompetitionID = reader.GetInt32(0),
-                        AreaInterestID = reader.GetInt32(1),
+                        AreaInterest = reader.GetString(1),
                         CompetitionName = reader.GetString(2),
                         StartDate = reader.GetDateTime(3),
                         EndDate = reader.GetDateTime(4),
@@ -101,6 +104,113 @@ namespace WEB_ASG.DAL
             conn.Close();
             return compList;
         }
+        public List<CompetitionDetailsViewModel> GetCompetitorCompetition(int competitorID)
+        {
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify the SQL statement that select all judges
+            cmd.CommandText = @"SELECT Competition.CompetitionID, AreaInterest.Name, CompetitionName, StartDate, EndDate, ResultReleasedDate
+                                FROM Competition
+                                INNER JOIN AreaInterest ON Competition.AreaInterestID = AreaInterest.AreaInterestID
+                                INNER JOIN CompetitionSubmission ON Competition.CompetitionID = CompetitionSubmission.CompetitionID
+                                WHERE CompetitionSubmission.CompetitorID = @selectedCompetitor";
+            //Define the parameter used in SQL statement, value for the
+            //parameter is retrieved from the method parameter “competitorID”.
+            cmd.Parameters.AddWithValue("@selectedCompetitor", competitorID);
+            //Open a database connection
+            conn.Open();
+            //Execute SELCT SQL through a DataReader
+            SqlDataReader reader = cmd.ExecuteReader();
+            List<CompetitionDetailsViewModel> competitionList = new List<CompetitionDetailsViewModel>();
+            while (reader.Read())
+            {
+                competitionList.Add(
+                    new CompetitionDetailsViewModel
+                    {
+                        CompetitionID = reader.GetInt32(0),
+                        AreaInterest = reader.GetString(1),
+                        CompetitionName = reader.GetString(2),
+                        StartDate = reader.GetDateTime(3),
+                        EndDate = reader.GetDateTime(4),
+                        ResultReleaseDate = reader.GetDateTime(5)
+                    }
+                );
+            }
+            reader.Close();
+            conn.Close();
+            return competitionList;
+        }
+        public List<JudgeViewModel> GetCompetitionJudge(int competitionID)
+        {
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify the SQL statement that select all judges
+            cmd.CommandText = @"SELECT Judge.JudgeID, JudgeName, Salutation, AreaInterest.Name , EmailAddr, CompetitionID 
+                                FROM Judge 
+                                INNER JOIN CompetitionJudge ON Judge.JudgeID = CompetitionJudge.JudgeID
+                                INNER JOIN AreaInterest ON Judge.AreaInterestID = AreaInterest.AreaInterestID
+                                WHERE CompetitionID = @selectedCompetition";
+            //Define the parameter used in SQL statement, value for the
+            //parameter is retrieved from the method parameter “competitionID”.
+            cmd.Parameters.AddWithValue("@selectedCompetition", competitionID);
+
+            //Open a database connection
+            conn.Open();
+            //Execute SELCT SQL through a DataReader
+            SqlDataReader reader = cmd.ExecuteReader();
+            List<JudgeViewModel> judgeVMList = new List<JudgeViewModel>();
+            while (reader.Read())
+            {
+                judgeVMList.Add(
+                new JudgeViewModel
+                {
+                    JudgeID = reader.GetInt32(0),
+                    JudgeName = reader.GetString(1),
+                    Salutation = reader.GetString(2),
+                    EmailAddr = reader.GetString(4),
+                    CompetitionID = reader.GetInt32(5)
+                }
+                );
+            }
+            //Close DataReader
+            reader.Close();
+            //Close database connection
+            conn.Close();
+            return judgeVMList;
+        }
+        public List<Criteria> GetCompetitionCriteria(int competitionId)
+        {
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify the SQL statement that select all judges
+            cmd.CommandText = @"SELECT *
+                                FROM Criteria
+                                WHERE CompetitionID = @selectedCompetition";
+            //Define the parameter used in SQL statement, value for the
+            //parameter is retrieved from the method parameter “competitorID”.
+            cmd.Parameters.AddWithValue("@selectedCompetition", competitionId);
+            //Open a database connection
+            conn.Open();
+            //Execute SELCT SQL through a DataReader
+            SqlDataReader reader = cmd.ExecuteReader();
+            List<Criteria> criteriaList = new List<Criteria>();
+            while (reader.Read())
+            {
+                criteriaList.Add(
+                    new Criteria
+                    {
+                        CriteriaID = reader.GetInt32(0),
+                        CompetitionID = reader.GetInt32(1),
+                        CriteriaName = reader.GetString(2),
+                        Weightage = reader.GetInt32(3)
+                    }
+                );
+            }
+            reader.Close();
+            conn.Close();
+            return criteriaList;
+        }
+
         public int Update(Competition comp)
         {
             //Create a SqlCommand object from connection object
