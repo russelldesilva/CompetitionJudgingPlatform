@@ -19,8 +19,5 @@ namespace WEB_ASG.Models
         public IFormFile fileToUpload { get; set; }
         [StringLength(255, ErrorMessage = "File can only have a maximum of 255 characters!")]
         public string FileSubmitted { get; set; }
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}")]
-        public DateTime? DateTimeFileUpload { get; set; }
     }
 }
