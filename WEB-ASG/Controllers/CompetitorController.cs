@@ -14,6 +14,7 @@ namespace WEB_ASG.Controllers
     public class CompetitorController : Controller
     {
         private CompetitorDAL competitorContext = new CompetitorDAL();
+        private CompetitionDAL competitionContext = new CompetitionDAL();
 
         // GET: CompetitorController
         public ActionResult Index()
@@ -25,7 +26,10 @@ namespace WEB_ASG.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
-            return View();
+            int competitorID = HttpContext.Session.GetInt32("ID").Value;
+            List<CompetitionDetailsViewModel> competitionDetailsVM = new List<CompetitionDetailsViewModel>();
+            competitionDetailsVM = competitionContext.GetCompetitorCompetition(competitorID);
+            return View(competitionDetailsVM);
         }
 
         // GET: CompetitorController/Details/5
