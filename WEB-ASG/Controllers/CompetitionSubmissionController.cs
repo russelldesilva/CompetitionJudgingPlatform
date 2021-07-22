@@ -38,8 +38,9 @@ namespace WEB_ASG.Controllers
                 return RedirectToAction("Login", "Home");
             }
             if (id == null)
-            { //Query string parameter not provided
-              //Return to listing page, not allowed to edit
+            { 
+                //Query string parameter not provided
+                //Return to listing page, not allowed to edit
                 return RedirectToAction("Index", "Competition");
             }
             int competitorID = HttpContext.Session.GetInt32("ID").Value;
@@ -49,6 +50,11 @@ namespace WEB_ASG.Controllers
                 //Return to listing page, not allowed to edit
                 return RedirectToAction("Index", "Competition");
             }
+            if (ValidateCompetitorExist(id.Value, competitorID))
+            {
+                TempData["ErrorMessage"] = "Cannot join the same competition again";
+                return RedirectToAction("Index", "Competition");
+            }
             CompetitionSubmissionViewModel competitionSubmissionVM = new CompetitionSubmissionViewModel
             {
                 CompetitionID = id.Value,
@@ -56,6 +62,19 @@ namespace WEB_ASG.Controllers
                 CompetitorID = competitorID
             };
             return View(competitionSubmissionVM);
+        }
+
+        public bool ValidateCompetitorExist(int competitionID, int competitorID)
+        {
+            List<CompetitionSubmission> competitionSubmissionList = competitionSubmissionContext.GetAllCompetitionSubmission(competitorID);
+            foreach(CompetitionSubmission competitionSubmission in competitionSubmissionList)
+            {
+                if((competitionSubmission.CompetitionID == competitionID) && (competitionSubmission.CompetitorID == competitorID))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         // POST: CompetitionSubmissionController/Create
@@ -105,18 +124,19 @@ namespace WEB_ASG.Controllers
                 }
             }
             //Add competitor record to database
-            //CompetitionSubmission competitionSubmissions = MapToCompetitionSubmission(competitionSubmissionVM);
-            //competitionSubmissionContext.Add(competitionSubmissions);
+            CompetitionSubmission competitionSubmissions = MapToCompetitionSubmission(competitionSubmissionVM);
+            competitionSubmissionContext.Add(competitionSubmissions);
             return RedirectToAction("Index", "Competitor");
         }
 
-
-        public CompetitionSubmission MapToCompetitionSubmission([FromForm]CompetitionSubmissionViewModel competitionSubmissionVM)
+        public CompetitionSubmission MapToCompetitionSubmission(CompetitionSubmissionViewModel competitionSubmissionVM)
         {
             return new CompetitionSubmission
             {
                 CompetitionID = competitionSubmissionVM.CompetitionID,
                 CompetitorID = competitionSubmissionVM.CompetitorID,
+                FileSubmitted = competitionSubmissionVM.FileSubmitted,
+                DateTimeFileUpload = competitionSubmissionVM.FileSubmitted != null ? DateTime.Now : (DateTime?)null,
                 VoteCount = 0
             };
         }
