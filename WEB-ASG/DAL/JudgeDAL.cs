@@ -71,6 +71,27 @@ namespace WEB_ASG.DAL
             conn.Close();
             return criteriaList;
         }
+        public List<Competition> GetCompetitionName()
+        {
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = @"SELECT * FROM Competition ORDER BY CompetitionID";
+            conn.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+            List<Competition> competitionList = new List<Competition>();
+            while (reader.Read())
+            {
+                competitionList.Add(
+                    new Competition
+                    {
+                        CompetitionID = reader.GetInt32(0),
+                        CompetitionName = reader.GetString(2)
+                    }
+                );
+            }
+            reader.Close();
+            conn.Close();
+            return competitionList;
+        }
         public List<Judge> GetJudges(int areaID)
         {
             SqlCommand cmd = conn.CreateCommand();

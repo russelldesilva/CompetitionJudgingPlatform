@@ -10,11 +10,13 @@
     <fieldset class="FormContent">
         <div class="form-group row">
             <label asp-for="CompetitionID"
-                   class="col-sm-3 col-form-label"></label>
+                   class="col-sm-3 col-form-label">CompetitionName</label>
             <div class="col-sm-9 col-md-5">
-                <input asp-for="CompetitionID" class="form-control" />
-                <span asp-validation-for="CompetitionID"
-                      class="text-danger"></span>
+                <select asp-for="CompetitionID"
+                        asp-items="@ViewData["CompetitionName"]
+ as List<SelectListItem>"
+                        class="form-control">
+                </select>
             </div>
         </div>
         <div class="form-group row">
