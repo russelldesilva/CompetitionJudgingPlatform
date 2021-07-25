@@ -25,6 +25,10 @@
                             {
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Competitor" asp-action="Index">Home</a>
                             }
+                            else if (Context.Session.GetString("Role") == "Judge")
+                            {
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Judge" asp-action="Index">Home</a>
+                            }
                             else
                             {
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>

@@ -77,7 +77,7 @@ namespace WEB_ASG.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
-            List<Criteria> criteriaList = judgeContext.GetAllCriteria();
+            List<CriteriaViewModel> criteriaList = judgeContext.GetAllCriteriaViewModel();
             return View(criteriaList);
         }
         private List<SelectListItem> GetCompetition()
