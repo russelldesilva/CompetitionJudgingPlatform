@@ -1,7 +1,51 @@
-﻿@model WEB_ASG.Models.Competitor
+﻿@model IEnumerable<WEB_ASG.Models.CompetitionDetailsViewModel>
 
 @{
     ViewData["Title"] = "Index";
+}
+
+<h4 class="PageTitle">Competition Joined</h4>
+
+@if (Model.ToList().Count > 0)
+{
+    <div class="table-responsive">
+        <table id="viewBook" class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Competition ID</th>
+                    <th>Competition Name</th>
+                    <th>Area Of Interest</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Result Release Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.CompetitionID</td>
+                        <td>@item.CompetitionName</td>
+                        <td>@item.AreaInterest</td>
+                        <td>@item.StartDate.ToString("MM/dd/yyyy")</td>
+                        <td>@item.EndDate.ToString("MM/dd/yyyy hh:mm tt")</td>
+                        <td>@item.ResultReleaseDate.ToString("MM/dd/yyyy")</td>
+                        <td>
+                            <a asp-action="Edit" asp-controller="CompetitionSubmission"
+                               asp-route-id="@item.CompetitionID">My Submission</a> |
+                            <a asp-action="Index" asp-controller="CompetitionScore"
+                               asp-route-id="@item.CompetitionID">View Score</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <span style="color:red">No competition found!</span>
 }
 
 <p><a asp-controller="Competition" asp-action="Index">Join a Competition</a></p>

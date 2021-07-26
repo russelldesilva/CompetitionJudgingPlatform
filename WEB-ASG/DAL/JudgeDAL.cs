@@ -71,6 +71,57 @@ namespace WEB_ASG.DAL
             conn.Close();
             return criteriaList;
         }
+        public List<CriteriaViewModel> GetAllCriteriaViewModel()
+        {
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify the SQL statement that select all judges
+            cmd.CommandText = @"Select CriteriaID, CriteriaName, Criteria.CompetitionID, CompetitionName, Weightage from Criteria
+                                INNER JOIN Competition on Criteria.CompetitionID = Competition.CompetitionID";
+            //Define the parameter used in SQL statement, value for the
+            //Open a database connection
+            conn.Open();
+            //Execute SELCT SQL through a DataReader
+            SqlDataReader reader = cmd.ExecuteReader();
+            List<CriteriaViewModel> criteriaList = new List<CriteriaViewModel>();
+            while (reader.Read())
+            {
+                criteriaList.Add(
+                    new CriteriaViewModel
+                    {
+                        CriteriaID = reader.GetInt32(0),
+                        CriteriaName = reader.GetString(1),
+                        CompetitionID = reader.GetInt32(2),
+                        CompetitionName = reader.GetString(3),
+                        Weightage = reader.GetInt32(4)
+                    }
+                );
+            }
+            reader.Close();
+            conn.Close();
+            return criteriaList;
+        }
+        public List<Competition> GetCompetitionName()
+        {
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = @"SELECT * FROM Competition ORDER BY CompetitionID";
+            conn.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+            List<Competition> competitionList = new List<Competition>();
+            while (reader.Read())
+            {
+                competitionList.Add(
+                    new Competition
+                    {
+                        CompetitionID = reader.GetInt32(0),
+                        CompetitionName = reader.GetString(2)
+                    }
+                );
+            }
+            reader.Close();
+            conn.Close();
+            return competitionList;
+        }
         public List<Judge> GetJudges(int areaID)
         {
             SqlCommand cmd = conn.CreateCommand();

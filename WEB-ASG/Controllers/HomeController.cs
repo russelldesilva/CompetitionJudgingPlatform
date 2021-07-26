@@ -37,6 +37,7 @@ namespace WEB_ASG.Controllers
                 {
                     // Store user role “Admin” as a string in session with the key “Role”
                     HttpContext.Session.SetString("Role", "Admin");
+                    HttpContext.Session.SetString("Name", "Admin");
                     return RedirectToAction("Index", "Admin");
                 }
                 //Check if user is judge
@@ -48,6 +49,7 @@ namespace WEB_ASG.Controllers
                     {
                         // Store user role “Judge” as a string in session with the key “Role”
                         HttpContext.Session.SetString("Role", "Judge");
+                        HttpContext.Session.SetString("Name", judge.JudgeName);
                         return RedirectToAction("Index", "Judge");
                     }
                 }
@@ -60,6 +62,7 @@ namespace WEB_ASG.Controllers
                     {
                         // Store user role “Competitor” as a string in session with the key “Role”
                         HttpContext.Session.SetString("Role", "Competitor");
+                        HttpContext.Session.SetString("Name", competitor.CompetitorName);
                         HttpContext.Session.SetInt32("ID", competitor.CompetitorID);
                         return RedirectToAction("Index", "Competitor");
                     }
@@ -75,7 +78,13 @@ namespace WEB_ASG.Controllers
                 return View(loginVM);
             }
         }
-
+        public IActionResult Logout()
+        {
+            // Clear all key-values pairs stored in session state
+            HttpContext.Session.Clear();
+            // Call the Index action of Home controller
+            return RedirectToAction("Index","Home");
+        }
         public IActionResult Competition(int compID)
         {
             Competition comp = competitionContext.GetDetails("CompetitionID", compID)[0];
@@ -85,7 +94,7 @@ namespace WEB_ASG.Controllers
 
         public IActionResult ViewCompetition()
         {
-            List<Competition> compList = competitionContext.GetAllCompetitions();
+            List<CompetitionDetailsViewModel> compList = competitionContext.GetAllCompetitions();
             ViewData["compList"] = compList;
 
             return View();

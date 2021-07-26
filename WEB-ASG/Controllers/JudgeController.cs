@@ -64,6 +64,7 @@ namespace WEB_ASG.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
+            ViewData["CompetitionName"] = GetCompetition();
             return View();
         }
 
@@ -76,8 +77,23 @@ namespace WEB_ASG.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
-            List<Criteria> criteriaList = judgeContext.GetAllCriteria();
+            List<CriteriaViewModel> criteriaList = judgeContext.GetAllCriteriaViewModel();
             return View(criteriaList);
+        }
+        private List<SelectListItem> GetCompetition()
+        {
+            List<Competition> competition = judgeContext.GetCompetitionName();
+            List<SelectListItem> competitionName = new List<SelectListItem>();
+            foreach (var com in competition)
+            {
+                competitionName.Add(new SelectListItem
+                {
+                    Value = Convert.ToString(com.CompetitionID),
+                    Text = com.CompetitionName
+                });
+                
+            }
+            return competitionName;
         }
         private List<SelectListItem> GetAreaOfInterest()
         {
@@ -90,7 +106,7 @@ namespace WEB_ASG.Controllers
                     Value = Convert.ToString(aoi.AreaInterestID),
                     Text = aoi.Name
                 });
-                
+
             }
             return areaofInterest;
         }
@@ -150,6 +166,7 @@ namespace WEB_ASG.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateCriteria(Criteria criteria)
         {
+            ViewData["CompetitionName"] = GetCompetition();
             if (ModelState.IsValid)
             {
                 //Add staff record to database
