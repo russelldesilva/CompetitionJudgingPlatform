@@ -101,6 +101,67 @@ namespace WEB_ASG.DAL
             conn.Close();
             return criteriaList;
         }
+
+        public List<CompetitionJudgeViewModel> GetCompetitionAssigned(int judgeID)
+        {
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify the SQL statement that select all judges
+            cmd.CommandText = @"select CompetitionJudge.CompetitionID, CompetitionName from CompetitionJudge 
+                                INNER JOIN Competition ON Competition.CompetitionID = CompetitionJudge.CompetitionID
+                                WHERE JudgeID = @selectedJudge";
+            //Define the parameter used in SQL statement, value for the
+            //parameter is retrieved from the method parameter “competitorID”.
+            cmd.Parameters.AddWithValue("@selectedJudge", judgeID);
+            //Open a database connection
+            conn.Open();
+            //Execute SELCT SQL through a DataReader
+            SqlDataReader reader = cmd.ExecuteReader();
+            List<CompetitionJudgeViewModel> competitionList = new List<CompetitionJudgeViewModel>();
+            while (reader.Read())
+            {
+                competitionList.Add(
+                    new CompetitionJudgeViewModel
+                    {
+                        CompetitionID = reader.GetInt32(0),
+                        CompetitionName = reader.GetString(1),
+                    }
+                );
+            }
+            reader.Close();
+            conn.Close();
+            return competitionList;
+        }
+        public List<Competitor> GetAllCompetitors(int competitionID)
+        {
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify the SELECT SQL statement
+            cmd.CommandText = @"SELECT CompetitionSubmission.CompetitorID, CompetitorName from CompetitionSubmission INNER JOIN
+                                Competitor ON Competitor.CompetitorID = CompetitionSubmission.CompetitorID where CompetitionID = @selectedCompetition";
+            cmd.Parameters.AddWithValue("@selectedCompetition", competitionID);
+            //Open a database connection
+            conn.Open();
+            //Execute the SELECT SQL through a DataReader
+            SqlDataReader reader = cmd.ExecuteReader();
+            //Read all records until the end, save data into a competitor list
+            List<Competitor> competitorList = new List<Competitor>();
+            while (reader.Read())
+            {
+                competitorList.Add(
+                new Competitor
+                {
+                    CompetitorID = reader.GetInt32(0), //0: 1st column
+                    CompetitorName = reader.GetString(1), //1: 2nd column
+                    
+                }
+                );
+            }
+            //Close DataReader
+            reader.Close();
+            //Close the database connection
+            conn.Close();
+            return competitorList;
+        }
         public List<Competition> GetCompetitionName()
         {
             SqlCommand cmd = conn.CreateCommand();
