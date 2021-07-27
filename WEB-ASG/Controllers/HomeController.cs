@@ -50,6 +50,7 @@ namespace WEB_ASG.Controllers
                         // Store user role “Judge” as a string in session with the key “Role”
                         HttpContext.Session.SetString("Role", "Judge");
                         HttpContext.Session.SetString("Name", judge.JudgeName);
+                        HttpContext.Session.SetInt32("ID", judge.JudgeID);
                         return RedirectToAction("Index", "Judge");
                     }
                 }
@@ -83,13 +84,13 @@ namespace WEB_ASG.Controllers
             // Clear all key-values pairs stored in session state
             HttpContext.Session.Clear();
             // Call the Index action of Home controller
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
         }
         public IActionResult Competition(int compID)
         {
             Competition comp = competitionContext.GetDetails("CompetitionID", compID)[0];
             comp.CompetitorList = competitorContext.GetAllCompetitor();
-            return View(comp);           
+            return View(comp);
         }
 
         public IActionResult ViewCompetition()

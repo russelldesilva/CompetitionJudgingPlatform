@@ -63,7 +63,7 @@ namespace WEB_ASG.DAL
                         CompetitionID = reader.GetInt32(1),
                         CriteriaName = reader.GetString(2),
                         Weightage = reader.GetInt32(3),
-                        
+
                     }
                 );
             }
@@ -100,6 +100,67 @@ namespace WEB_ASG.DAL
             reader.Close();
             conn.Close();
             return criteriaList;
+        }
+
+        public List<CompetitionJudgeViewModel> GetCompetitionAssigned(int judgeID)
+        {
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify the SQL statement that select all judges
+            cmd.CommandText = @"select CompetitionJudge.CompetitionID, CompetitionName from CompetitionJudge 
+                                INNER JOIN Competition ON Competition.CompetitionID = CompetitionJudge.CompetitionID
+                                WHERE JudgeID = @selectedJudge";
+            //Define the parameter used in SQL statement, value for the
+            //parameter is retrieved from the method parameter “competitorID”.
+            cmd.Parameters.AddWithValue("@selectedJudge", judgeID);
+            //Open a database connection
+            conn.Open();
+            //Execute SELCT SQL through a DataReader
+            SqlDataReader reader = cmd.ExecuteReader();
+            List<CompetitionJudgeViewModel> competitionList = new List<CompetitionJudgeViewModel>();
+            while (reader.Read())
+            {
+                competitionList.Add(
+                    new CompetitionJudgeViewModel
+                    {
+                        CompetitionID = reader.GetInt32(0),
+                        CompetitionName = reader.GetString(1),
+                    }
+                );
+            }
+            reader.Close();
+            conn.Close();
+            return competitionList;
+        }
+        public List<Competitor> GetAllCompetitors(int competitionID)
+        {
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify the SELECT SQL statement
+            cmd.CommandText = @"SELECT CompetitionSubmission.CompetitorID, CompetitorName from CompetitionSubmission INNER JOIN
+                                Competitor ON Competitor.CompetitorID = CompetitionSubmission.CompetitorID where CompetitionID = @selectedCompetition";
+            cmd.Parameters.AddWithValue("@selectedCompetition", competitionID);
+            //Open a database connection
+            conn.Open();
+            //Execute the SELECT SQL through a DataReader
+            SqlDataReader reader = cmd.ExecuteReader();
+            //Read all records until the end, save data into a competitor list
+            List<Competitor> competitorList = new List<Competitor>();
+            while (reader.Read())
+            {
+                competitorList.Add(
+                new Competitor
+                {
+                    CompetitorID = reader.GetInt32(0), //0: 1st column
+                    CompetitorName = reader.GetString(1), //1: 2nd column
+
+                }
+                );
+            }
+            //Close DataReader
+            reader.Close();
+            //Close the database connection
+            conn.Close();
+            return competitorList;
         }
         public List<Competition> GetCompetitionName()
         {
@@ -224,9 +285,9 @@ namespace WEB_ASG.DAL
                     count = count + reader.GetInt32(0);
 
                 }
-                
+
             }
-            
+
             if (count - Weightage + weightage > 100)
             {
                 weightageWrong = true;
@@ -240,12 +301,12 @@ namespace WEB_ASG.DAL
                 weightageWrong = false;
             }
             else if (count + weightage > 100)
-            { 
-                weightageWrong = true; 
-            }                
+            {
+                weightageWrong = true;
+            }
             else
-            { 
-                weightageWrong = false; 
+            {
+                weightageWrong = false;
             }
             reader.Close();
             conn.Close();
@@ -288,7 +349,7 @@ namespace WEB_ASG.DAL
                                 Weightage = @weightage WHERE CriteriaID = @selectedCriteriaID";
             //Define the parameters used in SQL statement, value for each parameter
             //is retrieved from respective class's property.
-            cmd.Parameters.AddWithValue("@criteriaName",criteria.CriteriaName);
+            cmd.Parameters.AddWithValue("@criteriaName", criteria.CriteriaName);
             cmd.Parameters.AddWithValue("@weightage", criteria.Weightage);
             cmd.Parameters.AddWithValue("@selectedCriteriaID", criteria.CriteriaID);
             //Open a database connection
@@ -385,7 +446,7 @@ namespace WEB_ASG.DAL
             {
                 foreach (Judge j in judgeList)
                 {
-                    if  (j.JudgeID == reader.GetInt32(1))
+                    if (j.JudgeID == reader.GetInt32(1))
                     {
                         j.Selected = true;
                     }
@@ -395,7 +456,7 @@ namespace WEB_ASG.DAL
             conn.Close();
             return judgeList;
         }
-        public int InsertCompetitionJudge (int compID, int judgeID)
+        public int InsertCompetitionJudge(int compID, int judgeID)
         {
             SqlCommand cmd = conn.CreateCommand();
             cmd.CommandText = @"INSERT INTO CompetitionJudge (CompetitionID, JudgeID)
@@ -407,7 +468,7 @@ namespace WEB_ASG.DAL
             conn.Close();
             return count;
         }
-        public int RemoveCompetitionJudge (int compID, int judgeID)
+        public int RemoveCompetitionJudge(int compID, int judgeID)
         {
             SqlCommand cmd = conn.CreateCommand();
             cmd.CommandText = @"DELETE FROM CompetitionJudge WHERE CompetitionID = @compID and JudgeID = @judgeID";

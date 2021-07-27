@@ -68,6 +68,31 @@ namespace WEB_ASG.Controllers
             return View();
         }
 
+        public ActionResult AssignScore()
+        {
+            // Stop accessing the action if not logged in
+            // or account not in the "Staff" role
+            if ((HttpContext.Session.GetString("Role") == null) ||
+            (HttpContext.Session.GetString("Role") != "Judge"))
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            int competitionID = HttpContext.Session.GetInt32("competitionID").Value;
+            ViewData["CompetitorNames"] = GetCompetitorList(competitionID);
+            return View();
+        }
+
+        public ActionResult SelectCompetition()
+        {
+            if ((HttpContext.Session.GetString("Role") == null) ||
+            (HttpContext.Session.GetString("Role") != "Judge"))
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            ViewData["CompetitionNames"] = GetCompetitionAssignedTo();
+            return View();
+        }
+
         public ActionResult ViewCriteria()
         {
             // Stop accessing the action if not logged in
@@ -80,6 +105,23 @@ namespace WEB_ASG.Controllers
             List<CriteriaViewModel> criteriaList = judgeContext.GetAllCriteriaViewModel();
             return View(criteriaList);
         }
+
+        private List<SelectListItem> GetCompetitionAssignedTo()
+        {
+            int judgeID = HttpContext.Session.GetInt32("ID").Value;
+            List<CompetitionJudgeViewModel> competitionAssignedTo = judgeContext.GetCompetitionAssigned(judgeID);
+            List<SelectListItem> competitionAssigned = new List<SelectListItem>();
+            foreach (var com in competitionAssignedTo)
+            {
+                competitionAssigned.Add(new SelectListItem
+                {
+                    Value = Convert.ToString(com.CompetitionID),
+                    Text = com.CompetitionName
+                });
+
+            }
+            return competitionAssigned;
+        }
         private List<SelectListItem> GetCompetition()
         {
             List<Competition> competition = judgeContext.GetCompetitionName();
@@ -91,7 +133,7 @@ namespace WEB_ASG.Controllers
                     Value = Convert.ToString(com.CompetitionID),
                     Text = com.CompetitionName
                 });
-                
+
             }
             return competitionName;
         }
@@ -160,6 +202,39 @@ namespace WEB_ASG.Controllers
                 //Input validation fails, return to the Create view
                 //to display error message
                 return View(judge);
+            }
+        }
+        private List<SelectListItem> GetCompetitorList(int competitionID)
+        {
+            List<Competitor> competitorList = judgeContext.GetAllCompetitors(competitionID);
+            List<SelectListItem> competitorName = new List<SelectListItem>();
+            foreach (var com in competitorList)
+            {
+                competitorName.Add(new SelectListItem
+                {
+                    Value = Convert.ToString(com.CompetitorID),
+                    Text = com.CompetitorName
+                });
+
+            }
+            return competitorName;
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SelectCompetition(CompetitionJudge competitionjudge)
+        {
+            ViewData["CompetitionNames"] = GetCompetitionAssignedTo();
+            if (ModelState.IsValid)
+            {
+                HttpContext.Session.SetInt32("competitionID", competitionjudge.CompetitionID);
+                //Redirect user to Judge/Index view
+                return RedirectToAction("AssignScore");
+            }
+            else
+            {
+                //Input validation fails, return to the Create view
+                //to display error message
+                return View(competitionjudge);
             }
         }
         [HttpPost]
