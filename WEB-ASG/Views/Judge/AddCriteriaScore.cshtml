@@ -1,0 +1,73 @@
+﻿@model IEnumerable<WEB_ASG.Models.CompetitionScoreViewModel>
+<div>
+    <h4 style="margin-bottom:25px" class="PageTitle">Create New Score</h4>
+</div>
+@if (Model.ToList().Count > 0)
+{
+    <div class="table-responsive">
+        <table id="viewBook" class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.CriteriaName)</th>
+                    <th>@Html.DisplayNameFor(model => model.Weightage)</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.CriteriaName</td>
+                        <td>@item.Weightage</td>
+                        <td>
+                            @{
+                                int rcriteriaID;
+                                string rScore = ""; string errorMsg = "";
+                                // An error for the row detected
+                                if (TempData["CriteriaID"] != null)
+                                {
+                                    rcriteriaID = Convert.ToInt32(TempData["CriteriaID"]);
+                                    if (rcriteriaID == item.CriteriaID)
+                                    {
+                                        rScore = TempData["Score"].ToString();
+                                        errorMsg = @TempData["Message"].ToString();
+                                    }
+                                }
+                            }
+                            <form asp-controller="Judge" asp-action="AddCriteriaScore" method="post">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <input asp-for="@item.Score"
+                                                   value="@rScore" />
+                                            <input type="hidden" asp-for="@item.CriteriaID" />
+                                            <span asp-validation-for="@item.Score"
+                                                  class="text-danger"></span>
+                                            <input type="submit" value="Add"
+                                                   class="btn btn-primary" />
+
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <span style="color:red">No record found!</span>
+}
+<div>
+    <h6 style="color:red"><strong>@TempData["SucessfulMessage"]</strong></h6>
+</div>
+<div>
+<h6 style="color:red"><strong>@TempData["Message"]</strong></h6>
+</div>
+<div>
+    <a asp-action="EditCriteriaScores">Back to List</a>
+</div>
+

@@ -10,6 +10,7 @@ namespace WEB_ASG.Models
     {
         [Display(Name = "Competition ID")]
         public int CompetitionID { get; set; }
+        [Display(Name = "Competition Name")]
         public string CompetitionName { get; set; }
 
         [Display(Name = "Judge ID")]

@@ -7,11 +7,12 @@
 <div>
     <h1>Select Competition</h1>
 </div>
-<form asp-action="SelectCompetition">
+<hr />
+<form style="margin-top: 30px" asp-action="SelectCompetition">
     <fieldset class="FormContent">
         <div class="form-group row">
             <label asp-for="CompetitionID"
-                   class="col-sm-3 col-form-label">CompetitionName</label>
+                   class="col-sm-3 col-form-label">Competition Name</label>
             <div class="col-sm-9 col-md-5">
                 <select asp-for="CompetitionID"
                         asp-items="@ViewData["CompetitionNames"]

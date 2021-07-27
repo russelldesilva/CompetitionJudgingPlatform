@@ -4,12 +4,15 @@
     ViewData["Title"] = "AssignScore";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<form asp-action="AssignScore">
+<div>
+    <h1>Select Competitor</h1>
+</div>
+<hr />
+<form style="margin-top: 30px" asp-action="SelectCompetitor">
     <fieldset class="FormContent">
         <div class="form-group row">
             <label asp-for="CompetitorID"
-                   class="col-sm-3 col-form-label">CompetitionName</label>
+                   class="col-sm-3 col-form-label">Competitior Name</label>
             <div class="col-sm-9 col-md-5">
                 <select asp-for="CompetitorID"
                         asp-items="@ViewData["CompetitorNames"]
@@ -20,7 +23,7 @@
         </div>
         <div class="form-group row">
             <div class="col-sm-9 offset-sm-3">
-                <input type="submit" value="Assign Scores"
+                <input type="submit" value="Next"
                        class="btn btn-primary" />
             </div>
         </div>
