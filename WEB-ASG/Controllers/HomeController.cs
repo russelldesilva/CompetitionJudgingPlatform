@@ -50,7 +50,6 @@ namespace WEB_ASG.Controllers
                         // Store user role “Judge” as a string in session with the key “Role”
                         HttpContext.Session.SetString("Role", "Judge");
                         HttpContext.Session.SetString("Name", judge.JudgeName);
-                        HttpContext.Session.SetInt32("ID", judge.JudgeID);
                         return RedirectToAction("Index", "Judge");
                     }
                 }
