@@ -66,6 +66,13 @@
 </form>
 
 <div>
-    <a asp-action="Index">Back to Admin Home</a>
+    @if (Model.CompetitionID == 0)
+    {
+        <a asp-action="Index">Back to Admin Home</a>
+    }
+    else
+    {
+        <a asp-action="ViewAreaInterest" asp-route-aoiID="@Model.AreaInterestID">Back to List</a>
+    }
 </div>
 
