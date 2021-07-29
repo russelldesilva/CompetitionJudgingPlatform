@@ -42,9 +42,22 @@ namespace WEB_ASG.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
+            List<Competition> competitions = competitionContext.GetDetails("AreaInterestID", aoiID);
             AreaInterest aoi = areaInterestContext.GetDetails(aoiID);
-            aoi.CompetitonList = competitionContext.GetDetails("AreaInterestID", aoiID);
-            return View(aoi);
+            CompetitionViewModel compVM = new CompetitionViewModel { areaInterestID = aoiID, areaInterestName = aoi.Name };
+            foreach (Competition c in competitions)
+            {
+                compVM.competitionList.Add(new CompetitionDetailsViewModel
+                {
+                    CompetitionID = c.CompetitionID,
+                    AreaInterest = aoi.Name,
+                    CompetitionName = c.CompetitionName,
+                    StartDate = c.StartDate,
+                    EndDate = c.EndDate,
+                    ResultReleaseDate = c.ResultReleaseDate
+                });
+            }
+            return View(compVM);
         }
         public IActionResult CreateAreaInterest()
         {
@@ -118,7 +131,7 @@ namespace WEB_ASG.Controllers
                     selected += 1;
                 }
             }
-            if (selected < 2)
+            if (selected < 2 && comp.CompetitionID != 0)
             {
                 ViewData["Message2"] = "At least 2 judges per competition!";
                 error = true;
@@ -128,7 +141,7 @@ namespace WEB_ASG.Controllers
                 ViewData["aoiList"] = areaInterestContext.GetAreaInterests();
                 return View(comp);
             }
-            else if (comp.CompetitionID == 0)
+            if (comp.CompetitionID == 0)
             {
                 competitionContext.Add(comp);
                 return RedirectToAction("Index");
