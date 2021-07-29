@@ -42,9 +42,22 @@ namespace WEB_ASG.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
+            List<Competition> competitions = competitionContext.GetDetails("AreaInterestID", aoiID);
             AreaInterest aoi = areaInterestContext.GetDetails(aoiID);
-            aoi.CompetitonList = competitionContext.GetDetails("AreaInterestID", aoiID);
-            return View(aoi);
+            CompetitionViewModel compVM = new CompetitionViewModel { areaInterestID = aoiID, areaInterestName = aoi.Name };
+            foreach (Competition c in competitions)
+            {
+                compVM.competitionList.Add(new CompetitionDetailsViewModel
+                {
+                    CompetitionID = c.CompetitionID,
+                    AreaInterest = aoi.Name,
+                    CompetitionName = c.CompetitionName,
+                    StartDate = c.StartDate,
+                    EndDate = c.EndDate,
+                    ResultReleaseDate = c.ResultReleaseDate
+                });
+            }
+            return View(compVM);
         }
         public IActionResult CreateAreaInterest()
         {
