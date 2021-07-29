@@ -16,6 +16,7 @@ namespace WEB_ASG.Controllers
     {
         private CompetitionDAL competitionContext = new CompetitionDAL();
         private CompetitionSubmissionDAL competitionSubmissionContext = new CompetitionSubmissionDAL();
+        private CompetitionScoreDAL competitionScoreContext = new CompetitionScoreDAL();
 
         // GET: CompetitionSubmissionController
         public ActionResult Index()
@@ -129,9 +130,14 @@ namespace WEB_ASG.Controllers
                 }
             }
             //Add competitor record to database
-            CompetitionSubmission competitionSubmissions = MapToCompetitionSubmission(competitionSubmissionVM);
-            competitionSubmissionContext.Add(competitionSubmissions);
-            return RedirectToAction("Index", "Competitor");
+            // Check if input value is valid
+            if (ModelState.IsValid)
+            {
+                CompetitionSubmission competitionSubmissions = MapToCompetitionSubmission(competitionSubmissionVM);
+                competitionSubmissionContext.Add(competitionSubmissions);
+                return RedirectToAction("Index", "Competitor");
+            }
+            return View(competitionSubmissionVM);
         }
 
         public CompetitionSubmission MapToCompetitionSubmission(CompetitionSubmissionViewModel competitionSubmissionVM)
@@ -142,7 +148,8 @@ namespace WEB_ASG.Controllers
                 CompetitorID = competitionSubmissionVM.CompetitorID,
                 FileSubmitted = competitionSubmissionVM.FileSubmitted,
                 DateTimeFileUpload = competitionSubmissionVM.FileSubmitted != null ? DateTime.Now : (DateTime?)null,
-                VoteCount = 0
+                VoteCount = 0,
+                Appeal = competitionSubmissionVM.Appeal
             };
         }
 
@@ -170,6 +177,7 @@ namespace WEB_ASG.Controllers
             CompetitionSubmissionViewModel competitionSubmissionVM = competitionSubmissionContext.GetDetails(id.Value, competitorID);
             return View(competitionSubmissionVM);
         }
+
 
         // POST: CompetitionSubmissionController/Edit/5
         [HttpPost]
@@ -226,6 +234,58 @@ namespace WEB_ASG.Controllers
             CompetitionSubmission competitionSubmissions = MapToCompetitionSubmission(competitionSubmissionVM);
             competitionSubmissionContext.Update(competitionSubmissions);
             return RedirectToAction("Index", "Competitor");
+        }
+
+        public ActionResult SubmitAppeal(int? id)
+        {
+            if ((HttpContext.Session.GetString("Role") == null) ||
+            (HttpContext.Session.GetString("Role") != "Competitor"))
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            if (id == null)
+            {
+                //Query string parameter not provided
+                //Return to listing page, not allowed to edit
+                return RedirectToAction("Index", "Competitor");
+            }
+            int competitorID = HttpContext.Session.GetInt32("ID").Value;
+            Competition competition = competitionContext.GetCompetition(id.Value);
+            if (competition == null)
+            {
+                //Return to listing page, not allowed to edit
+                return RedirectToAction("Index", "Competitor");
+            }
+            CompetitionSubmissionViewModel competitionSubmissionVM = competitionSubmissionContext.GetDetails(id.Value, competitorID);
+            if(competitionSubmissionVM.Appeal != null)
+            {
+                TempData["ErrorMessage"] = "You can only submit one appeal";
+                return RedirectToAction("Index", "Competitor", new { compId = id.Value });
+            }
+            if (DateTime.Now >= competition.ResultReleaseDate)
+            {
+                TempData["ErrorMessage"] = "You cannot submit any appeal after the results has been released";
+                return RedirectToAction("Index", "Competitor", new { compId = id.Value });
+            }
+            return View(competitionSubmissionVM);
+        }
+
+
+        // POST: CompetitionSubmissionController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SubmitAppeal(CompetitionSubmissionViewModel competitionSubmissionVM)
+        {
+            
+            if (ModelState.IsValid)
+            {
+                //Update appeal to database
+                CompetitionSubmission competitionSubmissions = MapToCompetitionSubmission(competitionSubmissionVM);
+                competitionSubmissionContext.Update(competitionSubmissions);
+                return RedirectToAction("Index", "Competitor");
+            }
+            //Return error message
+            return View(competitionSubmissionVM);
         }
 
         // GET: CompetitionSubmissionController/Delete/5
