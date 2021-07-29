@@ -131,7 +131,7 @@ namespace WEB_ASG.Controllers
                     selected += 1;
                 }
             }
-            if (selected < 2)
+            if (selected < 2 && comp.CompetitionID != 0)
             {
                 ViewData["Message2"] = "At least 2 judges per competition!";
                 error = true;
@@ -141,7 +141,7 @@ namespace WEB_ASG.Controllers
                 ViewData["aoiList"] = areaInterestContext.GetAreaInterests();
                 return View(comp);
             }
-            else if (comp.CompetitionID == 0)
+            if (comp.CompetitionID == 0)
             {
                 competitionContext.Add(comp);
                 return RedirectToAction("Index");

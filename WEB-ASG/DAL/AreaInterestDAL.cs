@@ -90,14 +90,24 @@ namespace WEB_ASG.DAL
             //Instantiate a SqlCommand object, supply it with a DELETE SQL statement
             //to delete a staff record specified by a Staff ID
             SqlCommand cmd = conn.CreateCommand();
+            SqlCommand cmd1 = conn.CreateCommand();
+            SqlCommand cmd2 = conn.CreateCommand();
+            cmd2.CommandText = @"DELETE FROM Competition
+                                 WHERE AreaInterestID = @areaInterestID";
+            cmd1.CommandText = @"DELETE FROM Judge
+                                 WHERE AreaInterestID = @areaInterestID";
             cmd.CommandText = @"DELETE FROM AreaInterest
                                 WHERE AreaInterestID = @areaInterestID";
             cmd.Parameters.AddWithValue("@areaInterestID", areaInterestID);
+            cmd1.Parameters.AddWithValue("@areaInterestID", areaInterestID);
+            cmd2.Parameters.AddWithValue("@areaInterestID", areaInterestID);
             //Open a database connection
             conn.Open();
             int rowAffected = 0;
             //Execute the DELETE SQL to remove the staff record
             rowAffected += cmd.ExecuteNonQuery();
+            rowAffected += cmd1.ExecuteNonQuery();
+            rowAffected += cmd2.ExecuteNonQuery();
             //Close database connection
             conn.Close();
             //Return number of row of staff record updated or deleted
