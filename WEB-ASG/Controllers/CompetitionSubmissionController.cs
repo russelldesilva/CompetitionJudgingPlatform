@@ -50,6 +50,11 @@ namespace WEB_ASG.Controllers
                 //Return to listing page, not allowed to edit
                 return RedirectToAction("Index", "Competition");
             }
+            if (DateTime.Now > competition.StartDate.AddDays(-3))
+            {
+                TempData["ErrorMessage"] = "You can only join competition 3 days before the start date";
+                return RedirectToAction("Index", "Competition");
+            }
             if (ValidateCompetitorExist(id.Value, competitorID))
             {
                 TempData["ErrorMessage"] = "Cannot join the same competition again";
