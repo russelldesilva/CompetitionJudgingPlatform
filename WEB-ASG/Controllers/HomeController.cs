@@ -8,6 +8,13 @@ using Microsoft.Extensions.Logging;
 using WEB_ASG.Models;
 using WEB_ASG.DAL;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Google.Apis.Auth.OAuth2;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Google.Apis.Auth;
+using static Google.Apis.Auth.GoogleJsonWebSignature;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication;
 
 namespace WEB_ASG.Controllers
 {
@@ -26,7 +33,10 @@ namespace WEB_ASG.Controllers
         {
             return View();
         }
-
+        public IActionResult Login()
+        {
+            return View();
+        }
         [HttpPost]
         public IActionResult Login(LoginViewModel loginVM)
         {
@@ -79,12 +89,15 @@ namespace WEB_ASG.Controllers
                 return View(loginVM);
             }
         }
-        public IActionResult Logout()
+        public async Task<ActionResult> Logout()
         {
+            // Clear authentication cookie
+            await HttpContext.SignOutAsync(
+            CookieAuthenticationDefaults.AuthenticationScheme);
             // Clear all key-values pairs stored in session state
             HttpContext.Session.Clear();
             // Call the Index action of Home controller
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login");
         }
         public IActionResult Competition(int compID)
         {
@@ -116,7 +129,7 @@ namespace WEB_ASG.Controllers
         {
             return View();
         }
-        public IActionResult Login()
+        public ActionResult Privacy()
         {
             return View();
         }
@@ -124,6 +137,48 @@ namespace WEB_ASG.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        [Authorize]
+        public async Task<ActionResult> GoogleLogin()
+        {
+            // The user is already authenticated, so this call won't
+            // trigger login, but it allows us to access token related values.
+            AuthenticateResult auth = await HttpContext.AuthenticateAsync();
+            string idToken = auth.Properties.GetTokenValue(
+             OpenIdConnectParameterNames.IdToken);
+            try
+            {
+                // Verify the current user logging in with Google server
+                // if the ID is invalid, an exception is thrown
+                Payload currentUser = await
+                GoogleJsonWebSignature.ValidateAsync(idToken);
+                string userName = currentUser.Name;
+                string eMail = currentUser.Email;
+                CompetitorDAL competitorContext = new CompetitorDAL();
+                List<Competitor> competitorList = competitorContext.GetAllCompetitor();
+                foreach (Competitor competitor in competitorList)
+                {
+                    if (eMail == competitor.EmailAddr)
+                    {
+                        // Store user role “Competitor” as a string in session with the key “Role”
+                        HttpContext.Session.SetString("Role", "Competitor");
+                        HttpContext.Session.SetString("Name", competitor.CompetitorName);
+                        HttpContext.Session.SetInt32("ID", competitor.CompetitorID);
+                        HttpContext.Session.SetString("LoginID", userName + " / " + eMail);
+                        HttpContext.Session.SetString("LoggedInTime",
+                         DateTime.Now.ToString());
+                        return RedirectToAction("Index", "Competitor");
+                    }
+                }
+                //If user does not belong to any the above, return error message
+                TempData["Message"] = "Invalid Login Credentials!";
+                return RedirectToAction("Logout");
+            }
+            catch (Exception e)
+            {
+                // Token ID is may be tempered with, force user to logout
+                return RedirectToAction("Logout");
+            }
         }
     }
 }

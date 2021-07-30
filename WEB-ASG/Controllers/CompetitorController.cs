@@ -8,9 +8,11 @@ using WEB_ASG.DAL;
 using WEB_ASG.Models;
 using System.IO;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WEB_ASG.Controllers
 {
+    [Authorize]
     public class CompetitorController : Controller
     {
         private CompetitorDAL competitorContext = new CompetitorDAL();
