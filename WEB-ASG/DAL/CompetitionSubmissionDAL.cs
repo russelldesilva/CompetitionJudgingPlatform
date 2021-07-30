@@ -109,7 +109,7 @@ namespace WEB_ASG.DAL
             SqlCommand cmd = conn.CreateCommand();
             //Specify the SELECT SQL statement that
             //retrieves all attributes of a competition submission record.
-            cmd.CommandText = @"SELECT Competition.CompetitionID, Competition.CompetitionName, CompetitorID, FileSubmitted, DateTimeFileUpload 
+            cmd.CommandText = @"SELECT Competition.CompetitionID, Competition.CompetitionName, CompetitorID, FileSubmitted, DateTimeFileUpload, Appeal
                                 FROM CompetitionSubmission 
                                 INNER JOIN Competition ON Competition.CompetitionID = CompetitionSubmission.CompetitionID
                                 WHERE Competition.CompetitionID = @selectedCompetitionID AND CompetitorID = @selectedCompetitorID";
@@ -132,6 +132,7 @@ namespace WEB_ASG.DAL
                     competitionSubmissionVM.CompetitorID = competitorID;
                     competitionSubmissionVM.FileSubmitted = !reader.IsDBNull(3) ? reader.GetString(3) : null;
                     competitionSubmissionVM.DateTimeFileUpload = !reader.IsDBNull(4) ? reader.GetDateTime(4) : (DateTime?)null;
+                    competitionSubmissionVM.Appeal = !reader.IsDBNull(5) ? reader.GetString(5) : null;
                 }
             }
             //Close data reader

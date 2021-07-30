@@ -17,9 +17,10 @@ namespace WEB_ASG.Controllers
     {
         private CompetitorDAL competitorContext = new CompetitorDAL();
         private CompetitionDAL competitionContext = new CompetitionDAL();
+        private CompetitionScoreDAL competitionScoreContext = new CompetitionScoreDAL();
 
         // GET: CompetitorController
-        public ActionResult Index()
+        public ActionResult Index(int? compId)
         {
             // Stop accessing the action if not logged in
             // or account not in the "Competitor" role
@@ -29,9 +30,22 @@ namespace WEB_ASG.Controllers
                 return RedirectToAction("Login", "Home");
             }
             int competitorID = HttpContext.Session.GetInt32("ID").Value;
-            List<CompetitionDetailsViewModel> competitionDetailsVM = new List<CompetitionDetailsViewModel>();
-            competitionDetailsVM = competitionContext.GetCompetitorCompetition(competitorID);
-            return View(competitionDetailsVM);
+            CompetitorCompetitionViewModel competitorCompetitionVM = new CompetitorCompetitionViewModel();
+            competitorCompetitionVM.competitionList = competitionContext.GetCompetitorCompetition(competitorID);
+
+            // Check if CompID (id) presents in the query string
+            if (compId != null)
+            {
+                ViewData["selectedCompID"] = compId.Value;
+                // Get list of scores for the Competition
+                competitorCompetitionVM.scoreList = competitionScoreContext.GetAllCompetitionScoreViewModel(competitorID, compId.Value);
+            }
+            else
+            {
+                ViewData["selectedCompID"] = "";
+            }
+
+            return View(competitorCompetitionVM);
         }
 
         // GET: CompetitorController/Details/5

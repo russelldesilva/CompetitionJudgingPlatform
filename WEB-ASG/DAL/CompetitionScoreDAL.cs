@@ -27,8 +27,8 @@ namespace WEB_ASG.DAL
         {
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
-            //Specify the SQL statement that select all judges
-            cmd.CommandText = @"select CompetitionScore.CriteriaID, CriteriaName, CompetitionScore.CompetitorID, CompetitorName, CompetitionScore.CompetitionID, CompetitionName, Score from
+            //Specify the SQL statement that select all competition score
+            cmd.CommandText = @"select CompetitionScore.CriteriaID, CriteriaName, CompetitionScore.CompetitorID, CompetitorName, CompetitionScore.CompetitionID, CompetitionName, Weightage, Score from
                                 CompetitionScore INNER JOIN Criteria ON Criteria.CriteriaID = CompetitionScore.CriteriaID INNER JOIN
                                 Competitor ON Competitor.CompetitorID = CompetitionScore.CompetitorID INNER JOIN Competition
                                 ON Competition.CompetitionID = CompetitionScore.CompetitionID WHERE CompetitionScore.CompetitorID = @selectedCompetitor
@@ -52,7 +52,8 @@ namespace WEB_ASG.DAL
                         CompetitorName = reader.GetString(3),
                         CompetitionID = reader.GetInt32(4),
                         CompetitionName = reader.GetString(5),
-                        Score = reader.GetInt32(6)
+                        Weightage = reader.GetInt32(6),
+                        Score = reader.GetInt32(7)
                     }
                 );
             }
