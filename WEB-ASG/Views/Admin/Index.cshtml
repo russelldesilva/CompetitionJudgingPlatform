@@ -1,22 +1,21 @@
 ﻿@{
     ViewData["Title"] = "Index";
-    Layout = "_AdminMenu";
+    Layout = "_Layout";
 }
 @model WEB_ASG.Models.AreaInterest
-<div class="row">
-    <div class="col-6">
-        <h1>Administrator Home</h1>
-    </div>
-</div>
-<h3 class="text-muted">Areas of Interest (AOI)</h3>
+
+<h1>Administrator Home</h1>
+
+<h4>Lion City University</h4>
+
 @if ((ViewData["aoiList"] as List<AreaInterest>).Count > 0)
 {
     <div class="table-responsive">
         <table id="viewBook" class="table table-striped table-bordered">
             <thead class="thead-dark">
                 <tr>
-                    <th>ID</th>
-                    <th>Name</th>
+                    <th>Area of Interest ID</th>
+                    <th>Area of Interest Name</th>
                     <th>Action</th>
                 </tr>
             </thead>

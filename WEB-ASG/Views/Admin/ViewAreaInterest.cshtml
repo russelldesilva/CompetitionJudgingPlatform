@@ -3,10 +3,12 @@
 
 @{
     ViewData["Title"] = "ViewAreaInterest";
-    Layout = "_AdminMenu";
+    Layout = "_Layout";
 }
 
-<h3>Area of Interest: <span class="text-muted">@Model.areaInterestName</span></h3>
+<h1>Area of Interest: <span class="text-muted">@Model.areaInterestName</span></h1>
+
+<h4>Lion City University</h4>
 
 @if (Model.competitionList.Count > 0)
 {

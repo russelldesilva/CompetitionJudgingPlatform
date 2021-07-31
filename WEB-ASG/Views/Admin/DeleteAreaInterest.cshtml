@@ -2,10 +2,12 @@
 
 @{
     ViewData["Title"] = "DeleteAreaInterest";
-    Layout = "_AdminMenu";
+    Layout = "_Layout";
 }
 
-<h1>Delete @Model.Name</h1>
+<h1>Delete <span class="text-muted">@Model.Name</span></h1>
+
+<h4>Lion City University</h4>
 
 <form asp-action="DeleteAreaInterest">
     <fieldset class="FormContent">
