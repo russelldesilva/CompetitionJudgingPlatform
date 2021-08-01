@@ -105,6 +105,16 @@ namespace WEB_ASG.Controllers
             ViewData["CompetitionNames"] = GetCompetitionAssignedTo();
             return View();
         }
+        public ActionResult SelectCompetitionForRanking()
+        {
+            if ((HttpContext.Session.GetString("Role") == null) ||
+            (HttpContext.Session.GetString("Role") != "Judge"))
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            ViewData["CompetitionNames"] = GetCompetitionAssignedTo();
+            return View();
+        }
 
         public ActionResult ViewCriteria()
         {
@@ -132,6 +142,19 @@ namespace WEB_ASG.Controllers
             int competitionID = HttpContext.Session.GetInt32("competitionID").Value;
             List<CompetitionScoreViewModel> competitionScoreList = judgeContext.GetAllCompetitionScoreViewModel(competitorID, competitionID);
             return View(competitionScoreList);
+        }
+        public ActionResult ViewRankings()
+        {
+            // Stop accessing the action if not logged in
+            // or account not in the "Judge" role
+            if ((HttpContext.Session.GetString("Role") == null) ||
+            (HttpContext.Session.GetString("Role") != "Judge"))
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            int competitionID = HttpContext.Session.GetInt32("rankcompetitionID").Value;
+            List<CompetitionSubmissionViewModel> competitionRankingList = judgeContext.GetAllCompetitionSubmissionViewModel(competitionID);
+            return View(competitionRankingList);
         }
 
         private List<SelectListItem> GetCompetitionAssignedTo()
@@ -179,6 +202,24 @@ namespace WEB_ASG.Controllers
 
             }
             return areaofInterest;
+        }
+        private List<SelectListItem> GetRankingNo()
+        {
+            int competitionID = HttpContext.Session.GetInt32("rankcompetitionID").Value;
+            int count = 0;
+            List<CompetitionSubmissionViewModel> competitionRankingList = judgeContext.GetAllCompetitionSubmissionViewModel(competitionID);
+            List<SelectListItem> rankingAmount = new List<SelectListItem>();
+            foreach (var i in competitionRankingList)
+            {
+                count = count + 1;
+                rankingAmount.Add(new SelectListItem
+                {
+                    Value = Convert.ToString(count),
+                    Text = Convert.ToString(count)
+                });
+
+            }
+            return rankingAmount;
         }
         private List<SelectListItem> GetSalutations()
         {
@@ -320,6 +361,24 @@ namespace WEB_ASG.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        public ActionResult SelectCompetitionForRanking(CompetitionSubmission competitionjudge)
+        {
+            ViewData["CompetitionNames"] = GetCompetitionAssignedTo();
+            if (ModelState.IsValid)
+            {
+                HttpContext.Session.SetInt32("rankcompetitionID", competitionjudge.CompetitionID);
+                //Redirect user to Judge/Index view
+                return RedirectToAction("ViewRankings");
+            }
+            else
+            {
+                //Input validation fails, return to the Create view
+                //to display error message
+                return View(competitionjudge);
+            }
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult CreateCriteria(Criteria criteria)
         {
             ViewData["CompetitionName"] = GetCompetition();
@@ -386,6 +445,38 @@ namespace WEB_ASG.Controllers
             }
             return View(competitionScore);
         }
+        public ActionResult EditRanking(int? id)
+        {
+            // Stop accessing the action if not logged in
+            // or account not in the "Judge" role
+            if ((HttpContext.Session.GetString("Role") == null) ||
+            (HttpContext.Session.GetString("Role") != "Judge"))
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            if (id == null)
+            { //Query string parameter not provided
+              //Return to listing page, not allowed to edit
+                return RedirectToAction("EditCriteriaScores");
+            }
+            int totalmarks = 0;
+            int competitionID = HttpContext.Session.GetInt32("rankcompetitionID").Value;
+            List<CompetitionSubmissionViewModel> marks = judgeContext.GetTotalScore(id.Value, competitionID);
+            foreach(var i in marks)
+            {
+                int mark = (i.Weightage * i.Score / 10);
+                totalmarks = totalmarks + mark;
+            }
+            CompetitionSubmissionViewModel competitionScore = judgeContext.GetRankDetails(id.Value, competitionID);
+            competitionScore.TotalScore = totalmarks;
+            ViewData["TotalRank"] = GetRankingNo();
+            if (competitionScore == null)
+            {
+                //Return to listing page, not allowed to edit
+                return RedirectToAction("EditCriteriaScores");
+            }
+            return View(competitionScore);
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -413,6 +504,35 @@ namespace WEB_ASG.Controllers
                 //Input validation fails, return to the view
                 //to display error message
                 return View(competitionScore);
+            }
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditRanking(CompetitionSubmissionViewModel competitionRank)
+        {
+            //Get branch list for drop-down list
+            //in case of the need to return to Edit.cshtml view
+            if (ModelState.IsValid)
+            {
+                int competitionID = HttpContext.Session.GetInt32("rankcompetitionID").Value;
+                Competition releaseDate = judgeContext.GetReleasedDate(competitionID);
+                if (releaseDate.ResultReleaseDate > DateTime.Now)
+                {
+                    //Update staff record to database
+                    judgeContext.UpdateRank(competitionRank, competitionID);
+                    return RedirectToAction("ViewRankings");
+                }
+                else
+                {
+                    TempData["Message"] = "You Cannot Edit Ranks After Release Date";
+                    return View(competitionRank);
+                }
+            }
+            else
+            {
+                //Input validation fails, return to the view
+                //to display error message
+                return View(competitionRank);
             }
         }
 

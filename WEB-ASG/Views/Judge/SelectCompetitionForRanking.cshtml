@@ -1,0 +1,34 @@
+﻿@model WEB_ASG.Models.CompetitionSubmission
+
+@{
+    ViewData["Title"] = "SelectCompetition";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div>
+    <h1>Select Competition</h1>
+</div>
+<hr />
+<form style="margin-top: 30px" asp-action="SelectCompetitionForRanking">
+    <fieldset class="FormContent">
+        <div class="form-group row">
+            <label asp-for="CompetitionID"
+                   class="col-sm-3 col-form-label">Competition Name</label>
+            <div class="col-sm-9 col-md-5">
+                <select asp-for="CompetitionID"
+                        asp-items="@ViewData["CompetitionNames"]
+ as List<SelectListItem>"
+                        class="form-control">
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-9 offset-sm-3">
+                <input type="submit" value="Next"
+                       class="btn btn-primary" />
+            </div>
+        </div>
+        <div>
+            <a asp-action="Index">Back to Home</a>
+        </div>
+    </fieldset>
+</form>

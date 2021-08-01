@@ -138,6 +138,40 @@ namespace WEB_ASG.DAL
             conn.Close();
             return competitionScores;
         }
+        
+        public List<CompetitionSubmissionViewModel> GetAllCompetitionSubmissionViewModel(int competitionID)
+        {
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify the SQL statement that select all judges
+            cmd.CommandText = @"select CompetitionSubmission.CompetitorID, CompetitorName, Appeal, VoteCount, Ranking from
+CompetitionSubmission inner join competitor on Competitor.CompetitorID = CompetitionSubmission.CompetitorID where CompetitionID = @selectedCompetition";
+            cmd.Parameters.AddWithValue("@selectedCompetition", competitionID);
+            //Define the parameter used in SQL statement, value for the
+            //Open a database connection
+            conn.Open();
+            //Execute SELCT SQL through a DataReader
+            SqlDataReader reader = cmd.ExecuteReader();
+            List<CompetitionSubmissionViewModel> competitionRanking = new List<CompetitionSubmissionViewModel>();
+            while (reader.Read())
+            {
+                competitionRanking.Add(
+                    new CompetitionSubmissionViewModel
+                    {
+                        CompetitorID = reader.GetInt32(0),
+                        CompetitorName = reader.IsDBNull(1) ? null : reader.GetString(1),
+                        Appeal = reader.IsDBNull(2) ? null : reader.GetString(2),
+                        VoteCount = reader.GetInt32(3),
+                        Ranking = !reader.IsDBNull(4) ?
+ reader.GetInt32(4) : (int?)null,
+                        CompetitionID = competitionID
+                    }
+                ) ;
+            }
+            reader.Close();
+            conn.Close();
+            return competitionRanking;
+        }
 
         public List<CompetitionScoreViewModel> GetAllCriteriaCompetition(int competitionID)
         {
@@ -304,6 +338,30 @@ namespace WEB_ASG.DAL
             reader.Close();
             conn.Close();
             return judgeList;
+        }
+        public List<CompetitionSubmissionViewModel> GetTotalScore(int competitorID, int competitionID)
+        {
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = @"select Score, Weightage from CompetitionScore INNER JOIN Criteria ON criteria.CriteriaID = CompetitionScore.CriteriaID
+where competitorID = @selectedCompetitorID and CompetitionScore.CompetitionID = @selectedCompetitionID";
+            cmd.Parameters.AddWithValue("@selectedCompetitorID", competitorID);
+            cmd.Parameters.AddWithValue("@selectedCompetitionID", competitionID);
+            conn.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+            List<CompetitionSubmissionViewModel> scoreList = new List<CompetitionSubmissionViewModel>();
+            while (reader.Read())
+            {
+                scoreList.Add(
+                    new CompetitionSubmissionViewModel
+                    {
+                        Score = reader.GetInt32(0),
+                        Weightage = reader.GetInt32(1),                       
+                    }
+                );
+            }
+            reader.Close();
+            conn.Close();
+            return scoreList;
         }
         public bool IsEmailExist(string email, int JudgeID)
         {
@@ -498,6 +556,26 @@ namespace WEB_ASG.DAL
             conn.Close();
             return count;
         }
+        public int UpdateRank(CompetitionSubmissionViewModel competitionrank, int competitionID)
+        {
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify an UPDATE SQL statement
+            cmd.CommandText = @"UPDATE CompetitionSubmission SET Ranking = @Rank
+                                 WHERE CompetitorID = @selectedCompetitorID AND CompetitionID = @selectedCompetitionID";
+            //Define the parameters used in SQL statement, value for each parameter
+            //is retrieved from respective class's property.
+            cmd.Parameters.AddWithValue("@Rank", competitionrank.Ranking);
+            cmd.Parameters.AddWithValue("@selectedCompetitorID", competitionrank.CompetitorID);
+            cmd.Parameters.AddWithValue("@selectedCompetitionID", competitionID);
+            //Open a database connection
+            conn.Open();
+            //ExecuteNonQuery is used for UPDATE and DELETE
+            int count = cmd.ExecuteNonQuery();
+            //Close the database connection
+            conn.Close();
+            return count;
+        }
         public int Delete(int criteriaID)
         {
             //Instantiate a SqlCommand object, supply it with a DELETE SQL statement
@@ -612,6 +690,46 @@ namespace WEB_ASG.DAL
             //Close database connection
             conn.Close();
             return competitionscore;
+        }
+        public CompetitionSubmissionViewModel GetRankDetails(int competitorID, int competitionID)
+        {
+            CompetitionSubmissionViewModel competitionrank = new CompetitionSubmissionViewModel();
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify the SELECT SQL statement that
+            //retrieves all attributes of a criteria record.
+            cmd.CommandText = @"select CompetitionSubmission.CompetitorID, CompetitorName, CompetitionName, Appeal, VoteCount, Ranking from CompetitionSubmission
+inner join competitor on Competitor.CompetitorID = CompetitionSubmission.CompetitorID inner join competition on competition.CompetitionID = CompetitionSubmission.CompetitionID
+where CompetitionSubmission.competitionID = @selectedCompetitorID and CompetitionSubmission.competitorID = @selectedCompetitorID";
+            //Define the parameter used in SQL statement, value for the
+            //parameter is retrieved from the method parameter “criteriaID”.
+            cmd.Parameters.AddWithValue("@selectedCompetitorID", competitorID);
+            cmd.Parameters.AddWithValue("@selectedCompetitionID", competitionID);
+            //Open a database connection
+            conn.Open();
+            //Execute SELCT SQL through a DataReader
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                //Read the record from database
+                while (reader.Read())
+                {
+                    // Fill competitor object with values from the data reader
+                    competitionrank.CompetitorID = reader.GetInt32(0);
+                    competitionrank.CompetitorName = reader.IsDBNull(1) ? null : reader.GetString(1);
+                    competitionrank.CompetitionName = reader.GetString(2);
+                    competitionrank.Appeal = reader.IsDBNull(3) ? null : reader.GetString(3);
+                    competitionrank.VoteCount = reader.GetInt32(4);
+                    competitionrank.Ranking = !reader.IsDBNull(5) ?
+ reader.GetInt32(5) : (int?)null;
+                    competitionrank.CompetitionID = competitionID;
+                }
+            }
+            //Close data reader
+            reader.Close();
+            //Close database connection
+            conn.Close();
+            return competitionrank;
         }
 
         public int AddCriteria(Criteria criteria)
