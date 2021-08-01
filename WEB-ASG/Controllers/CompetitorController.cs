@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WEB_ASG.Controllers
 {
-    [Authorize]
     public class CompetitorController : Controller
     {
         private CompetitorDAL competitorContext = new CompetitorDAL();
