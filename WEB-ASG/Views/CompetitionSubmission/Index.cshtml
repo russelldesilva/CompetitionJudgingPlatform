@@ -1,0 +1,28 @@
+﻿@model IEnumerable<WEB_ASG.Models.CompetitionSubmission>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<div class="row">
+    <div class="col-6">
+        <h1>Submissions</h1>
+    </div>
+</div>
+<div class="row row-cols-3">
+    @foreach (var cs in ViewData["csList"] as List<CompetitionSubmissionViewModel>)
+    {
+        <div class="col text-center">
+            <div class="card">
+                <div class="card-body">
+                    <h5>@cs.CompetitorID</h5>
+                    <h5>@cs.CompetitorName</h5>
+                    <h5>@cs.FileSubmitted</h5>
+                </div>
+            </div>
+        </div>
+    }
+</div>
