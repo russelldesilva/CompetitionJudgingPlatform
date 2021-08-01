@@ -13,6 +13,10 @@
                    class="col-sm-3 col-form-label"></label>
             <div class="col-sm-9 form-control-plaintext">
                 <input asp-for="CompetitorID" type="hidden" />
+                <input asp-for="CompetitionID" type="hidden" />
+                <input asp-for="CompetitionName" type="hidden" />
+                <input asp-for="FileSubmitted" type="hidden" />
+                <input asp-for="DateTimeFileUpload" type="hidden" />
                 @Html.Display("CompetitorID")
             </div>
         </div>
