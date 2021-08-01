@@ -9,6 +9,7 @@ using WEB_ASG.DAL;
 using System.IO;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Hosting;
 
 namespace WEB_ASG.Controllers
 {
@@ -17,6 +18,12 @@ namespace WEB_ASG.Controllers
         private CompetitionDAL competitionContext = new CompetitionDAL();
         private CompetitionSubmissionDAL competitionSubmissionContext = new CompetitionSubmissionDAL();
         private CompetitionScoreDAL competitionScoreContext = new CompetitionScoreDAL();
+        public IWebHostEnvironment environment;
+
+        public CompetitionSubmissionController(IWebHostEnvironment _environment)
+        {
+            environment = _environment;
+        }
 
         // GET: CompetitionSubmissionController
         public ActionResult Index()
@@ -234,6 +241,27 @@ namespace WEB_ASG.Controllers
             CompetitionSubmission competitionSubmissions = MapToCompetitionSubmission(competitionSubmissionVM);
             competitionSubmissionContext.Update(competitionSubmissions);
             return RedirectToAction("Index", "Competitor");
+        }
+
+        public ActionResult DownloadFile(string fileName, string id)
+        {
+            //File Path
+            string filePath = Path.Combine(this.environment.WebRootPath, "files\\") + fileName;
+
+            try
+            {
+                //Read file into byte array
+                byte[] bytes = System.IO.File.ReadAllBytes(filePath);
+                TempData["ErrorMessage"] = "";
+                //Send file to download
+                return File(bytes, "application/octet-stream", fileName);
+            }
+            catch(IOException)
+            {
+                int compId = Int32.Parse(id);
+                TempData["ErrorMessage"] = "The file is not found in the server";
+                return RedirectToAction("Edit", "CompetitionSubmission", new { id = compId });
+            }
         }
 
         public ActionResult SubmitAppeal(int? id)
