@@ -12,10 +12,11 @@ namespace WEB_ASG.Controllers
     public class CompetitionController : Controller
     {
         private CompetitionDAL competitionContext = new CompetitionDAL();
+        private CommentDAL commentContext = new CommentDAL();
 
         // GET: CompetitionController
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public ActionResult Index(int? compId1, int? compId2)
+        public ActionResult Index(int? compId1, int? compId2, int? compId3)
         {
             CompetitionViewModel competitionVM = new CompetitionViewModel();
             competitionVM.competitionList = competitionContext.GetAllCompetitions();
@@ -24,6 +25,7 @@ namespace WEB_ASG.Controllers
             {
                 ViewData["selectedCompID1"] = compId1.Value;
                 ViewData["selectedCompID2"] = "";
+                ViewData["selectedCompID3"] = "";
                 // Get list of Judges for the Competition
                 competitionVM.judgeVMList = competitionContext.GetCompetitionJudge(compId1.Value);
             }
@@ -31,13 +33,24 @@ namespace WEB_ASG.Controllers
             {
                 ViewData["selectedCompID1"] = "";
                 ViewData["selectedCompID2"] = compId2.Value;
+                ViewData["selectedCompID3"] = "";
                 // Get list of Criterias for the Competition
                 competitionVM.criteriaList = competitionContext.GetCompetitionCriteria(compId2.Value);
+            }
+            else if (compId3 != null)
+            {
+                ViewData["selectedCompID1"] = "";
+                ViewData["selectedCompID2"] = "";
+                ViewData["selectedCompID3"] = compId3.Value;
+                // Get list of Criterias for the Competition
+                competitionVM.commentList = commentContext.GetComment(compId3.Value);
+                competitionVM.postComment.CompetitionID = compId3.Value;
             }
             else
             {
                 ViewData["selectedCompID1"] = "";
                 ViewData["selectedCompID2"] = "";
+                ViewData["selectedCompID3"] = "";
             }
             return View(competitionVM);
         }
@@ -109,6 +122,11 @@ namespace WEB_ASG.Controllers
             {
                 return View();
             }
+        }
+        public ActionResult AddComment(CompetitionViewModel compVm)
+        {
+            commentContext.Add(compVm.postComment);
+            return RedirectToAction("Index");
         }
     }
 }

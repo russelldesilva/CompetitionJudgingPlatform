@@ -65,7 +65,9 @@
                                 <a asp-action="Index" asp-controller="Competition"
                                    asp-route-compId1="@item.CompetitionID">View Judge</a> |
                                 <a asp-action="Index" asp-controller="Competition"
-                                   asp-route-compId2="@item.CompetitionID">View Criteria</a>
+                                   asp-route-compId2="@item.CompetitionID">View Criteria</a> |
+                                <a asp-action="Index" asp-controller="Competition"
+                                   asp-route-compId3="@item.CompetitionID">View Comments</a>
                             </td>
                         }
                     </tr>
@@ -154,5 +156,49 @@ else
     else
     {
         <h5>No Criteria for selected competition!</h5>
+    }
+}
+
+<!-- Display a list of comments  for each competition -->
+@if (ViewData["selectedCompID3"].ToString() != "")
+{
+    if (Model.commentList.Count != 0)
+    {
+        <h5>
+            Comments for Competition
+            @ViewData["selectedCompID3"].ToString() :
+        </h5>
+
+        <div class="table-responsive">
+            <table id="viewBook" class="table table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Comment ID</th>
+                        <th>Description</th>
+                        <th>Date/Time Posted</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.commentList)
+                    {
+                        <tr>
+                            <td>@item.CommentID</td>
+                            <td>@item.Description</td>
+                            <td>@item.DateTimePosted</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <form asp-controller="Competition" asp-action="AddComment">
+            <input type="text" placeholder="Write a Comment" asp-for="@Model.postComment.Description"/>
+            <input type="hidden" asp-for="@Model.postComment.CompetitionID" />
+            <input type="hidden" asp-for="@Model.postComment.DateTimePosted" value="@DateTime.Now"/>
+            <input type="submit" value="Post"/>
+        </form>
+    }
+    else
+    {
+        <h5>No Comments for selected competition!</h5>
     }
 }
