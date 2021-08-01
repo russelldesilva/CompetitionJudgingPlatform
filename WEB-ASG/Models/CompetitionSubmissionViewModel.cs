@@ -26,6 +26,7 @@ namespace WEB_ASG.Models
         [Display(Name = "Date File Uploaded")]
         [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}")]
         public DateTime? DateTimeFileUpload { get; set; }
+        [StringLength(255, ErrorMessage = "Appeal can only have a maximum of 255 characters!")]
         public string Appeal { get; set; }
         [Display(Name = "Vote Count")]
         public int VoteCount { get; set; }
