@@ -114,13 +114,6 @@ namespace WEB_ASG.Controllers
             return View();
         }
 
-        public IActionResult ViewTeams(int competitorID)
-        {
-            Competitor c = competitorContext.GetDetails(competitorID);
-
-            return View(c);
-        }
-
         public IActionResult AboutUs()
         {
             return View();

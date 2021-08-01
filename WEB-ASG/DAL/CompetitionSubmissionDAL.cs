@@ -71,7 +71,48 @@ namespace WEB_ASG.DAL
             conn.Close();
             return competitionSubmissionList;
         }
+        public List<CompetitionSubmission> GetCompetitionSubmissionByCompetition(int compID)
+        {
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify the SELECT SQL statement to get all competition submmissions of a competitor
+            cmd.CommandText = @"SELECT * FROM CompetitionSubmission 
+                                WHERE CompetitionID = @selectedCompID  
+                                ORDER BY CompetitorID ";
+            //Define the parameter used in SQL statement, value for the
+            //parameter is retrieved from the method parameter “competitorID”.
+            cmd.Parameters.AddWithValue("@selectedCompID", compID);
+            //Open a database connection
+            conn.Open();
+            //Execute the SELECT SQL through a DataReader
+            SqlDataReader reader = cmd.ExecuteReader();
+            //Read all records until the end, save data into a competitionSubmission list
+            List<CompetitionSubmission> competitionSubmissionList = new List<CompetitionSubmission>();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    competitionSubmissionList.Add(
+                    new CompetitionSubmission
+                    {
+                        CompetitionID = reader.GetInt32(0), //0: 1st column
+                        CompetitorID = reader.GetInt32(1), //1: 2nd column
+                        FileSubmitted = !reader.IsDBNull(2) ? reader.GetString(2) : null, //2: 3rd column
+                        DateTimeFileUpload = !reader.IsDBNull(3) ? reader.GetDateTime(3) : (DateTime?)null, //3: 4th column
+                        Appeal = !reader.IsDBNull(4) ? reader.GetString(4) : null, //4: 5th column
+                        VoteCount = reader.GetInt32(5), //5: 6th column
+                        Ranking = !reader.IsDBNull(6) ? reader.GetInt32(6) : (int?)null, //6: 7th column
+                    }
+                    ); ;
+                }
+            }
 
+            //Close DataReader
+            reader.Close();
+            //Close the database connection
+            conn.Close();
+            return competitionSubmissionList;
+        }
         public void Add(CompetitionSubmission competitionSubmissions)
         {
             //Create a SqlCommand object from connection object

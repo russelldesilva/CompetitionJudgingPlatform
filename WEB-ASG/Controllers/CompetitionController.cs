@@ -13,10 +13,11 @@ namespace WEB_ASG.Controllers
     {
         private CompetitionDAL competitionContext = new CompetitionDAL();
         private CommentDAL commentContext = new CommentDAL();
-
+        private CompetitionSubmissionDAL submissionDAL = new CompetitionSubmissionDAL();
+        private CompetitorDAL competitorContext = new CompetitorDAL();
         // GET: CompetitionController
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public ActionResult Index(int? compId1, int? compId2, int? compId3)
+        public ActionResult Index(int? compId1, int? compId2, int? compId3, int? compId4)
         {
             CompetitionViewModel competitionVM = new CompetitionViewModel();
             competitionVM.competitionList = competitionContext.GetAllCompetitions();
@@ -26,6 +27,7 @@ namespace WEB_ASG.Controllers
                 ViewData["selectedCompID1"] = compId1.Value;
                 ViewData["selectedCompID2"] = "";
                 ViewData["selectedCompID3"] = "";
+                ViewData["selectedCompID4"] = "";
                 // Get list of Judges for the Competition
                 competitionVM.judgeVMList = competitionContext.GetCompetitionJudge(compId1.Value);
             }
@@ -34,6 +36,7 @@ namespace WEB_ASG.Controllers
                 ViewData["selectedCompID1"] = "";
                 ViewData["selectedCompID2"] = compId2.Value;
                 ViewData["selectedCompID3"] = "";
+                ViewData["selectedCompID4"] = "";
                 // Get list of Criterias for the Competition
                 competitionVM.criteriaList = competitionContext.GetCompetitionCriteria(compId2.Value);
             }
@@ -42,15 +45,37 @@ namespace WEB_ASG.Controllers
                 ViewData["selectedCompID1"] = "";
                 ViewData["selectedCompID2"] = "";
                 ViewData["selectedCompID3"] = compId3.Value;
-                // Get list of Criterias for the Competition
+                ViewData["selectedCompID4"] = "";
+                // Get list of Comments for the Competition
                 competitionVM.commentList = commentContext.GetComment(compId3.Value);
                 competitionVM.postComment.CompetitionID = compId3.Value;
+            }
+            else if (compId4 != null)
+            {
+                ViewData["selectedCompID1"] = "";
+                ViewData["selectedCompID2"] = "";
+                ViewData["selectedCompID3"] = "";
+                ViewData["selectedCompID4"] = compId4.Value;
+                // Get list of Criterias for the Competition
+                List<CompetitionSubmission> compSubs = submissionDAL.GetCompetitionSubmissionByCompetition(compId4.Value);
+                List<Competitor> cList = competitorContext.GetAllCompetitor();
+                for (int i = 0; i < compSubs.Count; i++)
+                {
+                    competitionVM.submissions.Add(new CompetitionSubmissionViewModel
+                    {
+                        CompetitorID = compSubs[i].CompetitorID,
+                        CompetitorName = cList[i].CompetitorName,
+                        FileSubmitted = compSubs[i].FileSubmitted,
+                        DateTimeFileUpload = compSubs[i].DateTimeFileUpload
+                    });
+                }
             }
             else
             {
                 ViewData["selectedCompID1"] = "";
                 ViewData["selectedCompID2"] = "";
                 ViewData["selectedCompID3"] = "";
+                ViewData["selectedCompID4"] = "";
             }
             return View(competitionVM);
         }

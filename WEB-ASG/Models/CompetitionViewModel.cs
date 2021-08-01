@@ -15,6 +15,7 @@ namespace WEB_ASG.Models
         public List<Criteria> criteriaList { get; set; }
         public List<Comment> commentList { get; set; }
         public Comment postComment { get; set; }
+        public List<CompetitionSubmissionViewModel> submissions { get; set; }
         public CompetitionViewModel()
         {
             competitionList = new List<CompetitionDetailsViewModel>();
@@ -22,6 +23,7 @@ namespace WEB_ASG.Models
             criteriaList = new List<Criteria>();
             commentList = new List<Comment>();
             postComment = new Comment();
+            submissions = new List<CompetitionSubmissionViewModel>();
         }
     }
 }
