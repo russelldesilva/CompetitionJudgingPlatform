@@ -14,6 +14,8 @@ namespace WEB_ASG.Controllers
     {
         private AreaInterestDAL areaInterestContext = new AreaInterestDAL();
         private JudgeDAL judgeContext = new JudgeDAL();
+        private CompetitionScoreDAL competitionScoreContext = new CompetitionScoreDAL();
+
         // GET: JudgeController
         public ActionResult Index()
         {
@@ -140,7 +142,7 @@ namespace WEB_ASG.Controllers
             }
             int competitorID = HttpContext.Session.GetInt32("competitorID").Value;
             int competitionID = HttpContext.Session.GetInt32("competitionID").Value;
-            List<CompetitionScoreViewModel> competitionScoreList = judgeContext.GetAllCompetitionScoreViewModel(competitorID, competitionID);
+            List<CompetitionScoreViewModel> competitionScoreList = competitionScoreContext.GetAllCompetitionScoreViewModel(competitorID, competitionID);
             return View(competitionScoreList);
         }
         public ActionResult ViewRankings()
@@ -295,7 +297,7 @@ namespace WEB_ASG.Controllers
                     competitionscore.CompetitorID = competitorID;
                     competitionscore.CompetitionID = competitionID;
                     competitionscore.Score = score;
-                    judgeContext.AddCompetitionScore(competitionscore);
+                    competitionScoreContext.AddCompetitionScore(competitionscore);
                     TempData["SucessfulMessage"] = "Score Added";
                     return RedirectToAction("AddCriteriaScore");
                 }
@@ -437,7 +439,7 @@ namespace WEB_ASG.Controllers
             }
             int competitionID = HttpContext.Session.GetInt32("competitionID").Value;
             int competitorID = HttpContext.Session.GetInt32("competitorID").Value;
-            CompetitionScoreViewModel competitionScore = judgeContext.GetScoreDetails(id.Value, competitorID, competitionID);
+            CompetitionScoreViewModel competitionScore = competitionScoreContext.GetScoreDetails(id.Value, competitorID, competitionID);
             if (competitionScore == null)
             {
                 //Return to listing page, not allowed to edit
@@ -490,7 +492,7 @@ namespace WEB_ASG.Controllers
                 if (releaseDate.ResultReleaseDate > DateTime.Now)
                 {
                     //Update staff record to database
-                    judgeContext.UpdateScore(competitionScore);
+                    competitionScoreContext.UpdateScore(competitionScore);
                     return RedirectToAction("EditCriteriaScores");
                 }
                 else
@@ -596,7 +598,7 @@ namespace WEB_ASG.Controllers
             }
             int competitionID = HttpContext.Session.GetInt32("competitionID").Value;
             int competitorID = HttpContext.Session.GetInt32("competitorID").Value;
-            CompetitionScoreViewModel competitionScore = judgeContext.GetScoreDetails(id.Value, competitorID, competitionID);
+            CompetitionScoreViewModel competitionScore = competitionScoreContext.GetScoreDetails(id.Value, competitorID, competitionID);
             if (competitionScore == null)
             {
                 //Return to listing page, not allowed to edit
@@ -609,7 +611,7 @@ namespace WEB_ASG.Controllers
         public ActionResult DeleteScores(CompetitionScoreViewModel competitionScore)
         {
             // Delete the staff record from database
-            judgeContext.DeleteScore(competitionScore.CriteriaID, competitionScore.CompetitorID, competitionScore.CompetitionID, competitionScore.Score);
+            competitionScoreContext.DeleteScore(competitionScore.CriteriaID, competitionScore.CompetitorID, competitionScore.CompetitionID, competitionScore.Score);
             return RedirectToAction("EditCriteriaScores");
         }
 

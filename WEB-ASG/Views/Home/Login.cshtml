@@ -28,11 +28,17 @@
         <div class="form-group row">
             <div class="col-sm-9 offset-sm-3">
                 <input type="submit" value="Login" class="btn btn-primary" />
-                <p>Don't have an account? <a href="~/Competitor/Create" class="myButton">
-                    Sign up as a Competitor
-                </a></p>
+                <p>
+                    Don't have an account? <a href="~/Competitor/Create">
+                        Sign up as a Competitor
+                    </a>
+                </p>
+                <p>
+                    <a href="~/Home/GoogleLogin" class="badge badge-danger"><img src="~/images/Google.png" width="15" height="15">   Sign in with Google</a> |
+                    <a href="~/Home/Privacy">Privacy Policy</a>
+                </p>
             </div>
+            <span style="color:red;">@TempData["Message"]</span>
         </div>
-        <span style="color:red;">@TempData["Message"]</span>
     </fieldset>
 </form>

@@ -2,10 +2,12 @@
 
 @{
     ViewData["Title"] = "DeleteComp";
-    Layout = "_AdminMenu";
+    Layout = "_Layout";
 }
 
-<h1>Delete @Model.CompetitionName</h1>
+<h1>Delete <span class="text-muted">@Model.CompetitionName</span></h1>
+
+<h4>Lion City University</h4>
 
 <form asp-action="DeleteComp">
     <fieldset class="FormContent">
@@ -73,7 +75,7 @@
             </div>
         </div>
         <div>
-            <a asp-action="Index">Back to List</a>
+            <a asp-action="ViewAreaInterest" asp-route-aoiID="@Model.AreaInterestID">Back to List</a>
         </div>
     </fieldset>
 </form>

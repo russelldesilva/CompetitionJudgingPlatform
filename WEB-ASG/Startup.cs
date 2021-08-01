@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Google.Apis.Auth.AspNetCore3;
 
 namespace WEB_ASG
 {
@@ -34,6 +36,28 @@ namespace WEB_ASG
                 options.Cookie.IsEssential = true;
             });
             services.AddControllersWithViews();
+            // This configures Google.Apis.Auth.AspNetCore3 for use in this app.
+            services.AddAuthentication(options =>
+            {
+                // Login (Challenge) to be handled by Google OpenID Handler,
+                options.DefaultChallengeScheme =
+                GoogleOpenIdConnectDefaults.AuthenticationScheme;
+
+                // Once a user is authenticated, the OAuth2 token info
+                // is stored in cookies.
+                options.DefaultScheme =
+                CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+           .AddCookie()
+           .AddGoogleOpenIdConnect(options =>
+           {
+               // Credentials (stored in appsettings.json) to identify
+               // the web app when performing Google authentication
+               options.ClientId =
+               Configuration["Authentication:Google:ClientId"];
+               options.ClientSecret =
+               Configuration["Authentication:Google:ClientSecret"];
+           });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,7 +77,7 @@ namespace WEB_ASG
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseSession();
             app.UseEndpoints(endpoints =>
@@ -61,7 +85,7 @@ namespace WEB_ASG
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-                    //pattern: "{controller=Home}/{action=Login}/{id?}");
+                //pattern: "{controller=Home}/{action=Login}/{id?}");
             });
         }
     }

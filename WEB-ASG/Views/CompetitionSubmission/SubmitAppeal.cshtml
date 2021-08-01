@@ -1,0 +1,43 @@
+﻿@model WEB_ASG.Models.CompetitionSubmissionViewModel
+@{
+    ViewData["Title"] = "SubmitAppeal";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Submit an Appeal for @Html.Display("CompetitionName")</h1>
+<hr />
+<form asp-action="SubmitAppeal">
+    <fieldset class="FormContent">
+        <div class="form-group row">
+            <label asp-for="CompetitorID"
+                   class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 form-control-plaintext">
+                <input asp-for="CompetitorID" type="hidden" />
+                <input asp-for="CompetitionID" type="hidden" />
+                <input asp-for="CompetitionName" type="hidden" />
+                <input asp-for="FileSubmitted" type="hidden" />
+                <input asp-for="DateTimeFileUpload" type="hidden" />
+                @Html.Display("CompetitorID")
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="Appeal"
+                    class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 form-control-plaintext">
+                <textarea asp-for="Appeal" style="width:200px;height:100px;resize:none"></textarea>
+                <br>
+                <span>*Please take note that you can only submit one appeal</span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-9 offset-sm-3">
+                <input type="submit" value="Submit"
+                        class="btn btn-primary" />
+            </div>
+            <span style="color:red;">@TempData["ErrorMessage"]</span>
+        </div>
+        <div>
+            <a asp-controller="Competitor" asp-action="Index">Back to List</a>
+        </div>
+    </fieldset>
+</form>

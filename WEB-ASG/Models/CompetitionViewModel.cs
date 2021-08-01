@@ -8,6 +8,8 @@ namespace WEB_ASG.Models
 {
     public class CompetitionViewModel
     {
+        public int areaInterestID { get; set; }
+        public string areaInterestName { get; set; }
         public List<CompetitionDetailsViewModel> competitionList { get; set; }
         public List<JudgeViewModel> judgeVMList { get; set; }
         public List<Criteria> criteriaList { get; set; }
