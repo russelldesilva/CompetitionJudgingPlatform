@@ -73,14 +73,15 @@ namespace WEB_ASG.DAL
         {
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
+            SqlCommand cmd1 = conn.CreateCommand();
             //Specify an INSERT SQL statement which will
             //return the auto-generated StaffID after insertion
-            cmd.CommandText = @"INSERT INTO Comment (CommentID, CompetitionID, Description, DateTimePosted)
+            cmd.CommandText = @"INSERT INTO Comment (CompetitionID, Description, DateTimePosted)
                                                 OUTPUT INSERTED.CommentID
-                                                VALUES(@comID, @compID, @desc, @dateTimePosted)";
+                                                VALUES(@compID, @desc, @dateTimePosted)";
+            cmd1.CommandText = @"SET IDENTITY_INSERT [dbo].[Comment] OFF";
             //Define the parameters used in SQL statement, value for each parameter
             //is retrieved from respective class's property.
-            cmd.Parameters.AddWithValue("@comID", com.CommentID);
             cmd.Parameters.AddWithValue("@compID", com.CompetitionID);
             cmd.Parameters.AddWithValue("@desc", com.Description);
             cmd.Parameters.AddWithValue("@dateTimePosted", com.DateTimePosted);
@@ -88,6 +89,7 @@ namespace WEB_ASG.DAL
             conn.Open();
             //ExecuteScalar is used to retrieve the auto-generated
             //StaffID after executing the INSERT SQL statement
+            cmd1.ExecuteNonQuery();
             com.CommentID = (int)cmd.ExecuteScalar();
             //A connection should be closed after operations.
             conn.Close();

@@ -192,17 +192,17 @@ else
                 </tbody>
             </table>
         </div>
-        <form asp-controller="Competition" asp-action="AddComment">
-            <input type="text" placeholder="Write a Comment" asp-for="@Model.postComment.Description" />
-            <input type="hidden" asp-for="@Model.postComment.CompetitionID" />
-            <input type="hidden" asp-for="@Model.postComment.DateTimePosted" value="@DateTime.Now" />
-            <input type="submit" value="Post" />
-        </form>
     }
     else
     {
         <h5>No Comments for selected competition!</h5>
     }
+    <form asp-controller="Competition" asp-action="AddComment">
+        <input type="text" placeholder="Write a Comment" asp-for="@Model.postComment.Description" />
+        <input type="hidden" asp-for="@Model.postComment.CompetitionID" />
+        <input type="hidden" asp-for="@Model.postComment.DateTimePosted" value="@DateTime.Now" />
+        <input type="submit" value="Post" />
+    </form>
 }
 
 @if (ViewData["selectedCompID4"].ToString() != "")
