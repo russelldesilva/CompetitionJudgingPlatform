@@ -281,8 +281,17 @@ namespace WEB_ASG.Controllers
         {
             if (ModelState.IsValid)
             {
+                int score = 0;
                 int criteriaid = Convert.ToInt32(collection["item.CriteriaID"]);
-                int score = int.Parse(collection["item.Score"]);
+                try
+                {
+                    score = int.Parse(collection["item.Score"]);
+                }
+                catch
+                {
+                    TempData["Message"] = "You must add value for the score";
+                    return RedirectToAction("AddCriteriaScore");
+                }                
                 int competitionID = HttpContext.Session.GetInt32("competitionID").Value;
                 int competitorID = HttpContext.Session.GetInt32("competitorID").Value;
                 if (score > 10 || score < 0)
